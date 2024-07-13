@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
 
@@ -8,8 +9,11 @@ const font = Poppins({
 
 const Logo = () => {
 	return (
-		<div className="hidden md:flex items-center gap-x-2">
-			<Image src="/logo.png" height="40" width="40" alt="Logo" />
+		<div className="hidden md:flex items-center gap-x-4">
+			<Image src="/logo.gif" height="60" width="60" alt="Logo" />
+			<p className={cn("font-extrabold text-2xl", font.className)}>
+				Weathery
+			</p>
 		</div>
 	);
 };
