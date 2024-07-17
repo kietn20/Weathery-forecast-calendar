@@ -49,23 +49,32 @@ export const Navbar = () => {
 		// </div>
 		<div className="w-full flex justify-between items-center p-6">
 			<Logo />
-			<div className="flex justify-between gap-x-2">
-				{!isLoaded && <Spinner />}
+			<div className="flex justify-between gap-x-3 pr-5">
+				{!isLoaded && <Spinner size="lg"/>}
 				{!isSignedIn && isLoaded && (
 					<>
 						<SignInButton mode="modal">
-							<Button variant="ghost" size="sm" className="hover:bg-lime-200 transition duration-300 ease-in-out">
+							<Button
+								variant="ghost"
+								size="lg"
+								className="hover:bg-lime-200 transition duration-300 ease-in-out border border-slate-400 hover:border-slate-600"
+							>
 								Log In
 							</Button>
 						</SignInButton>
 						<SignInButton mode="modal">
-							<Button size="sm">Try Weathery Free</Button>
+							<Button size="lg">Try Weathery Free</Button>
 						</SignInButton>
 					</>
 				)}
 				{isSignedIn && isLoaded && (
 					<>
-						<Button variant="ghost" size="sm" asChild>
+						<Button
+							variant="ghost"
+							size="lg"
+							asChild
+							className="transition ease-in-out duration-300"
+						>
 							<Link href="/documents">Enter Weathery</Link>
 						</Button>
 						<UserButton afterSignOutUrl="/" />
