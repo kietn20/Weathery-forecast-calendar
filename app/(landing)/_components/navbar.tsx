@@ -50,7 +50,7 @@ export const Navbar = () => {
 		<div className="w-full flex justify-between items-center p-6">
 			<Logo />
 			<div className="flex justify-between gap-x-3 pr-5">
-				{!isLoaded && <Spinner size="lg"/>}
+				{!isLoaded && <Spinner size="lg" />}
 				{!isSignedIn && isLoaded && (
 					<>
 						<SignInButton mode="modal">
@@ -73,7 +73,7 @@ export const Navbar = () => {
 							variant="ghost"
 							size="lg"
 							asChild
-							className="transition ease-in-out duration-300"
+							className=" hover:underline hover:border-slate-600 transition ease-in-out duration-300 hover:bg-violet-400 hover:text-white"
 						>
 							<Link href="/documents">Enter Weathery</Link>
 						</Button>
