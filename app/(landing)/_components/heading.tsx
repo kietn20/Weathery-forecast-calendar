@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Heading() {
 	const { isSignedIn, isLoaded } = useUser();
 	return (
-		<div className="relative max-w-[800px] space-y-4">
+		<div className="relative max-w-[800px] space-y-4 ">
 			<h1 className="text-6xl font-extrabold leading-[1.1]">
 				A monthly calendar that helps you plan your life around the{" "}
 				weather.
@@ -19,12 +19,17 @@ export default function Heading() {
 				nature to allow you to fully plans your days around the weather.
 			</h3>
 			<div className="flex gap-x-8 pt-5">
+				{!isLoaded && (
+					<div className="ml-52">
+						<Spinner size="lg" />
+					</div>
+				)}
 				{!isSignedIn && isLoaded && (
 					<>
 						<SignInButton mode="modal">
 							<Button
 								size="lg"
-								className="text-black w-52 h-16 rounded-3xl bg-[#9bccdd] text-base font-bold"
+								className="text-black w-52 h-16 rounded-3xl bg-[#9bccdd] hover:bg-violet-400 transition ease-in-out duration-300 text-base font-bold"
 							>
 								Try Weathery Free
 							</Button>
@@ -37,9 +42,9 @@ export default function Heading() {
 							variant="default"
 							size="lg"
 							asChild
-							className="text-black bg-[#9bccdd] hover:bg-neutral-800 w-52 h-16 hover:bg-violet-400 text-base font-bold transition ease-in-out duration-300 rounded-3xl"
+							className="text-black bg-[#9bccdd] w-52 h-16 hover:bg-violet-400 text-base font-bold transition ease-in-out duration-300 rounded-3xl"
 						>
-							<Link href="/documents">Enter Weathery</Link>
+							<Link href="/calendar">Enter Weathery</Link>
 						</Button>
 					</>
 				)}
@@ -47,7 +52,7 @@ export default function Heading() {
 					<div>
 						<Button
 							size="lg"
-							className="w-52 h-16 rounded-3xl bg-[#DFEFBD] text-base font-bold hover:bg-lime-200 transition ease-in-out duration-300"
+							className="w-52 h-16 rounded-3xl bg-[#DFEFBD] text-base font-bold hover:bg-lime-300 transition ease-in-out duration-300"
 							variant="secondary"
 						>
 							Try Demo

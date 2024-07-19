@@ -75,7 +75,7 @@ export const Navbar = () => {
 							asChild
 							className=" hover:underline hover:border-slate-600 transition ease-in-out duration-300 hover:bg-violet-400 hover:text-white"
 						>
-							<Link href="/documents">Enter Weathery</Link>
+							<Link href="/calendar">Enter Weathery</Link>
 						</Button>
 						<UserButton afterSignOutUrl="/" />
 					</>
