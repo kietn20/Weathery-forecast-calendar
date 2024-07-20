@@ -31,9 +31,9 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<div className="flex">
-            <LeftNavigation />
-			<main className="w-full h-screen bg-orange-100">{children}</main>
-            <RightNavigation />
+			<LeftNavigation />
+			<main className="w-screen h-screen overflow-hidden">{children}</main>
+			<RightNavigation />
 		</div>
 	);
 };

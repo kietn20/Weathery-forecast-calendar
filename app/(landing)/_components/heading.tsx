@@ -20,7 +20,7 @@ export default function Heading() {
 			</h3>
 			<div className="flex gap-x-8 pt-5">
 				{!isLoaded && (
-					<div className="ml-52">
+					<div className="ml-52 h-16">
 						<Spinner size="lg" />
 					</div>
 				)}
