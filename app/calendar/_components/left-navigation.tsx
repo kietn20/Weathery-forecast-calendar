@@ -17,7 +17,7 @@ const LeftNavigation = () => {
 				</button>
 			</div>
             <div>
-                <div></div>
+                <div className="w-5 h-5 border border-black"></div>
             </div>
 		</div>
 	);
