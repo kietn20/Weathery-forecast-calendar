@@ -15,7 +15,6 @@ if(!cached) {
         promise: null
     }
 }
-
 export const connect = async () => {
     if (cached.conn) return cached.conn;
 
@@ -29,4 +28,3 @@ export const connect = async () => {
     cached.conn = await cached.promise;
     return cached.conn;
 }
-
