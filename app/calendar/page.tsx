@@ -7,8 +7,16 @@ import interactionPlugin, {
 } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { Navbar } from "@/components/navbar";
+import { useUser } from "@clerk/nextjs";
+import { useEffect } from "react";
 
 const CalendarPage = () => {
+	const { user } = useUser();
+
+	useEffect(() => {
+		console.log(user);
+	}, []);
+
 	return (
 		<div className="flex flex-col">
 			<div className="h-screen pt-24 px-2">
