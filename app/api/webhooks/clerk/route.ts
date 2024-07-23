@@ -1,6 +1,8 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
-import { WebhookEvent } from '@clerk/nextjs/server'
+import { clerkClient, WebhookEvent } from '@clerk/nextjs/server'
+import { createUser } from '@/lib/actions/user.action'
+import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
 
@@ -66,6 +68,17 @@ export async function POST(req: Request) {
     }
 
     console.log(user)
+    const newUser = await createUser(user);
+
+    if (newUser) {
+      await clerkClient.users.updateUserMetadata(id, {
+        publicMetadata: {
+          userId: newUser._id
+        }
+      });
+    }
+
+    return NextResponse.json({ message: "New user created", user: newUser })
   }
 
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
