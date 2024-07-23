@@ -1,4 +1,4 @@
-import { Document, Schema, model, models } from "mongoose";
+import { Document, Model, Schema, model, models } from "mongoose";
 import {eventObjectSchema, IEventObject } from "./eventObject.model"
 import { tagSchema } from "./tag.model";
 
@@ -41,6 +41,6 @@ const UserSchema = new Schema({
     tags: [tagSchema]
 })
 
-const User = models?.User || model("User", UserSchema);
+const User: Model<IUser> = models?.User || model<IUser>("User", UserSchema);
 
 export default User;
