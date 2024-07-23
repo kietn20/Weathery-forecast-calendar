@@ -1,4 +1,4 @@
-"user server";
+"use server";
 
 import User from "../models/user.model";
 import { connect } from "../db";
