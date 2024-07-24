@@ -8,11 +8,6 @@ interface IUser extends Document {
     email: string,
     firstName?: string,
     lastName?: string,
-    events: IEventObject[],
-    tags: {
-        name: string,
-        color: string
-    }[]
 }
 
 const UserSchema = new Schema({
@@ -37,8 +32,6 @@ const UserSchema = new Schema({
     lastName: {
         type: String
     },
-    events: [eventObjectSchema],
-    tags: [tagSchema]
 })
 
 const User: Model<IUser> = models?.User || model<IUser>("User", UserSchema);

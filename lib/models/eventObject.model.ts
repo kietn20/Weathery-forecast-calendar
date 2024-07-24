@@ -1,18 +1,18 @@
 import mongoose, {Schema, Document, Model, models, model } from "mongoose";
 
 export type IEventObject = {
-    id: string, 
-    title: string,
-    addDay: boolean,
-    start: Date,
-    end: Date, 
-    url: string,
-    classNames: string[],
-    editable: boolean,
-    startEditable: boolean,
-    durationEditable: boolean, 
+    id?: string, 
+    title?: string,
+    addDay?: boolean,
+    start?: Date,
+    end?: Date, 
+    url?: string,
+    classNames?: string[],
+    editable?: boolean,
+    startEditable?: boolean,
+    durationEditable?: boolean, 
     resourceEditable?: boolean,
-    extendedProps: { tag: string }
+    extendedProps?: { tag: string }
 }
 
 const eventObjectSchema: Schema = new Schema({
