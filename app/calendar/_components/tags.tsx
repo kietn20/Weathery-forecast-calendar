@@ -32,7 +32,7 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 	return (
 		<div
 			key={tagAttributes.title}
-			className="flex items-center justify-between py-5 gap-x-5 "
+			className="flex items-center justify-between py-5 gap-x-5 bg-orange-100"
 		>
 			<div className="flex gap-x-3 items-center relative">
 				<DropdownMenu>

@@ -34,7 +34,7 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
 			</div>
 			<div className="w-[70%]">
 				{data.tags.map((tag: any) => (
-					<Tag tagAttributes={tag} />
+					<Tag key={tag.title} tagAttributes={tag} />
 				))}
 			</div>
 		</div>
