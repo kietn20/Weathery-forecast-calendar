@@ -4,7 +4,6 @@ import { TagSchema } from "./tag.model";
 // import { tagSchema } from "./tag.model";
 
 interface ITag {
-    id: number;
     title: string;
     color: string;
   }
@@ -50,17 +49,17 @@ const UserSchema = new Schema({
 
 
 // Middleware to auto-increment tag ID
-UserSchema.pre("save", function (next) {
-    const user = this as IUser;
+// UserSchema.pre("save", function (next) {
+//     const user = this as IUser;
     
-    user.tags.forEach((tag, index) => {
-      if (tag.id === undefined) {
-        tag.id = index + 1;
-      }
-    });
+//     user.tags.forEach((tag, index) => {
+//       if (tag.id === undefined) {
+//         tag.id = index + 1;
+//       }
+//     });
   
-    next();
-  });
+//     next();
+//   });
   
 
 const User: Model<IUser> = models?.User || model<IUser>("User", UserSchema);
