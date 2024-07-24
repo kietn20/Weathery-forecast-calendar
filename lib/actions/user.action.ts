@@ -12,13 +12,3 @@ export async function createUser(user: any) {
         console.log(error);
     }
 }
-
-export async function getUserData(userObjectId: any) {
-    try {
-        await connect();
-        const userData = await User.find({_id: userObjectId})
-        return JSON.parse(JSON.stringify(userData));
-    } catch (error) {
-        console.log(error)
-    }
-}

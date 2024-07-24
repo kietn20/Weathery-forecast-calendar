@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         firstName: first_name,
         lastName: last_name,
         events: [],
-        tags: [{title: username, color: '#1273de'}]        
+        tags: [{title: username, color: '#4a90e2'}]        
     }
 
     console.log(user)

@@ -6,31 +6,48 @@ import { redirect } from "next/navigation";
 import LeftNavigation from "./_components/left-navigation";
 import RightNavigation from "./_components/right-navigation";
 import { useEffect, useState } from "react";
-import { getUserData } from "@/lib/actions/user.action";
 
 const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 	const { isSignedIn, isLoaded, user } = useUser();
-	const [userData, setUserData] = useState({
-		tags: [{ title: "bob", color: "black" }],
-	});
+	const [loading, setLoading] = useState(true);
+	const [userData, setUserData] = useState(null);
 
-	if (isSignedIn) {
-		const getdata = async () => {
-			return await getUserData(user?.publicMetadata.userId);
-		} 
-		setUserData(getdata)
-	}
-
+	
 	useEffect(() => {
-		const getData = async () => {
-			const data = await getUserData(user?.publicMetadata.userId);
-			console.log(data[0]);
-			setUserData(data[0]);
+		if (!isLoaded) {
+			return;
+		}
+		
+		if (!isSignedIn) {
+			redirect("/");
+			return;
+		}
+		
+		const fetchUserFromApi = async () => {
+			try {
+				const response = await fetch("/api/data", {
+					headers: {
+						Accept: "application/json",
+						method: "GET",
+					},
+				});
+				
+				if (response.ok) {
+					const data = await response.json();
+					// console.log("Fetched user data:", data); // Debugging log
+					setUserData(data);
+				}
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false)
+			}
 		};
-		getData();
-	}, [user]);
+		
+		fetchUserFromApi();
+	}, [isLoaded, isSignedIn]);
 
-	if (!isLoaded) {
+	if (loading) {
 		return (
 			<div className="h-screen flex flex-col justify-center items-center">
 				<Image
@@ -46,13 +63,9 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 		);
 	}
 
-	if (!isSignedIn) {
-		return redirect("/");
-	}
-
 	return (
 		<div className="flex">
-			<LeftNavigation userData={userData} />
+			{userData && <LeftNavigation data={userData} />}
 			<main className="w-screen h-screen overflow-hidden">
 				{children}
 			</main>

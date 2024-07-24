@@ -3,18 +3,23 @@
 import { Calendar } from "@/components/ui/calendar";
 import { FolderPlus } from "lucide-react";
 import { useEffect, useState } from "react";
+import Tag from "./tags";
 
-// interface LeftNavigationProps {
-// 	tags?: [];
-// }
+interface LeftNavigationProps {
+	data: {
+		clerkId: string;
+		username: string;
+		email: string;
+		firstName?: string;
+		lastName?: string;
+		events: [];
+		tags: [];
+	};
+}
 
-const LeftNavigation = (userData : any) => {
-	const [tags, setTags] = useState([])
-	useEffect(() => {
-		console.log("tags:");
-		console.log(userData);
-		setTags(userData.tags)
-	}, [userData]);
+const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
+	// console.log("Data passed to LeftNavigation:", data); // Debugging log
+
 	return (
 		<div className="w-[300px] bg-[#F9F9F9] flex flex-col justify-start items-center pt-14">
 			<div>
@@ -27,14 +32,10 @@ const LeftNavigation = (userData : any) => {
 					<FolderPlus />
 				</button>
 			</div>
-			<div>
-				{tags?.map((tag : any) => (
-					<div>
-						<div>{tag.title}</div>
-						<div>{tag.color}</div>
-					</div>
+			<div className="w-[70%]">
+				{data.tags.map((tag: any) => (
+					<Tag tagAttributes={tag} />
 				))}
-				<div className="w-5 h-5 border border-black"></div>
 			</div>
 		</div>
 	);

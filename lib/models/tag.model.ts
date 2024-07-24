@@ -1,8 +1,18 @@
-import {Schema } from 'mongoose';
+import { Schema } from "mongoose";
 
-const tagSchema: Schema = new Schema({
-    title: { type: String, required: true},
-    color: { type: String, required: true}
+const TagSchema = new Schema({
+  id: {
+    type: Number,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  color: {
+    type: String,
+    required: true,
+  },
 });
 
-export { tagSchema };
+export { TagSchema };
