@@ -5,9 +5,21 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import LeftNavigation from "./_components/left-navigation";
 import RightNavigation from "./_components/right-navigation";
+import { useEffect, useState } from "react";
+import { getUserData } from "@/lib/actions/user.action";
 
 const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
-	const { isSignedIn, isLoaded } = useUser();
+	const { isSignedIn, isLoaded, user } = useUser();
+	const [userData, setUserData] = useState({});
+
+	useEffect(() => {
+		const getData = async () => {
+			const data = await getUserData(user?.publicMetadata.userId);
+			// console.log(data[0]);
+			setUserData(data[0]);
+		};
+		getData();
+	}, [isSignedIn]);
 
 	if (!isLoaded) {
 		return (
@@ -31,8 +43,10 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<div className="flex">
-			<LeftNavigation />
-			<main className="w-screen h-screen overflow-hidden">{children}</main>
+			<LeftNavigation tags={userData?.tags}/>
+			<main className="w-screen h-screen overflow-hidden">
+				{children}
+			</main>
 			<RightNavigation />
 		</div>
 	);

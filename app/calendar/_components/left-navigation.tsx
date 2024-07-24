@@ -2,8 +2,17 @@
 
 import { Calendar } from "@/components/ui/calendar";
 import { FolderPlus } from "lucide-react";
+import { useEffect } from "react";
 
-const LeftNavigation = () => {
+interface LeftNavigationProps {
+	tags?: [];
+}
+
+const LeftNavigation = ({ tags }: LeftNavigationProps) => {
+	useEffect(() => {
+		console.log("tags:")
+		console.log(tags);
+	}, []);
 	return (
 		<div className="w-[300px] bg-[#F9F9F9] flex flex-col justify-start items-center pt-14">
 			<div>
@@ -16,9 +25,9 @@ const LeftNavigation = () => {
 					<FolderPlus />
 				</button>
 			</div>
-            <div>
-                <div className="w-5 h-5 border border-black"></div>
-            </div>
+			<div>
+				<div className="w-5 h-5 border border-black"></div>
+			</div>
 		</div>
 	);
 };

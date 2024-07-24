@@ -13,9 +13,10 @@ import { useEffect } from "react";
 const CalendarPage = () => {
 	const { user } = useUser();
 
-	useEffect(() => {
-		console.log(user);
-	}, []);
+	// useEffect(() => {
+	// 	console.log(user);
+	// 	console.log(user?.publicMetadata.userId)
+	// }, []);
 
 	return (
 		<div className="flex flex-col">
