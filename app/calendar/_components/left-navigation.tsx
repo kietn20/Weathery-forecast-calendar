@@ -2,17 +2,19 @@
 
 import { Calendar } from "@/components/ui/calendar";
 import { FolderPlus } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-interface LeftNavigationProps {
-	tags?: [];
-}
+// interface LeftNavigationProps {
+// 	tags?: [];
+// }
 
-const LeftNavigation = ({ tags }: LeftNavigationProps) => {
+const LeftNavigation = (userData : any) => {
+	const [tags, setTags] = useState([])
 	useEffect(() => {
-		console.log("tags:")
-		console.log(tags);
-	}, []);
+		console.log("tags:");
+		console.log(userData);
+		setTags(userData.tags)
+	}, [userData]);
 	return (
 		<div className="w-[300px] bg-[#F9F9F9] flex flex-col justify-start items-center pt-14">
 			<div>
@@ -26,6 +28,12 @@ const LeftNavigation = ({ tags }: LeftNavigationProps) => {
 				</button>
 			</div>
 			<div>
+				{tags?.map((tag : any) => (
+					<div>
+						<div>{tag.title}</div>
+						<div>{tag.color}</div>
+					</div>
+				))}
 				<div className="w-5 h-5 border border-black"></div>
 			</div>
 		</div>

@@ -10,16 +10,25 @@ import { getUserData } from "@/lib/actions/user.action";
 
 const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 	const { isSignedIn, isLoaded, user } = useUser();
-	const [userData, setUserData] = useState({});
+	const [userData, setUserData] = useState({
+		tags: [{ title: "bob", color: "black" }],
+	});
+
+	if (isSignedIn) {
+		const getdata = async () => {
+			return await getUserData(user?.publicMetadata.userId);
+		} 
+		setUserData(getdata)
+	}
 
 	useEffect(() => {
 		const getData = async () => {
 			const data = await getUserData(user?.publicMetadata.userId);
-			// console.log(data[0]);
+			console.log(data[0]);
 			setUserData(data[0]);
 		};
 		getData();
-	}, [isSignedIn]);
+	}, [user]);
 
 	if (!isLoaded) {
 		return (
@@ -43,7 +52,7 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<div className="flex">
-			<LeftNavigation tags={userData?.tags}/>
+			<LeftNavigation userData={userData} />
 			<main className="w-screen h-screen overflow-hidden">
 				{children}
 			</main>
