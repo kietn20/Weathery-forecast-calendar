@@ -26,7 +26,7 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 		backgroundColor: color,
 	};
 
-	const handleColorChange = (newColor: string) => {
+	const handleColorChange = (newColor: any) => {
 		setColor(newColor.hex);
 	};
 	return (
