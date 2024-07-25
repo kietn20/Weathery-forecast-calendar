@@ -44,13 +44,13 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 						/>
 					</DropdownMenuTrigger>
 					{pickingColor && (
-						<div className="">
+						<div className="absolute">
 							<DropdownMenuContent className="absolute mt-3">
 								<BlockPicker
 									color={color}
 									className="absolute p-2"
 									onChangeComplete={handleColorChange}
-                                    triangle="hide"
+									triangle="hide"
 								/>
 							</DropdownMenuContent>
 						</div>
@@ -60,6 +60,7 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 					type="text"
 					value={title}
 					className="w-[90%] px-1 border-0 rounded-md focus:border-black focus:bg-white bg-inherit"
+					
 				/>
 			</div>
 			<div className="flex">
