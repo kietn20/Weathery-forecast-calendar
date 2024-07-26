@@ -10,7 +10,7 @@ interface ITag {
 
 interface IUser extends Document {
     clerkId: string;
-    username: string;
+    username?: string;
     email: string;
     firstName?: string;
     lastName?: string;
@@ -26,8 +26,6 @@ const UserSchema = new Schema({
     },
     username: {
         type: String, 
-        required: true, 
-        unique: true
     },
     email: {
         type: String, 
