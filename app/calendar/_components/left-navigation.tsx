@@ -19,7 +19,6 @@ interface LeftNavigationProps {
 
 const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
 	// console.log("Data passed to LeftNavigation:", data); // Debugging log
-
 	return (
 		<div className="w-[300px] bg-[#F9F9F9] flex flex-col justify-start items-center pt-14">
 			<div>
