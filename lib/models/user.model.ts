@@ -42,9 +42,14 @@ const UserSchema = new Schema({
     tags: {
         type: [TagSchema],
         default: [],
+        validate: [arrayLimit, '{PATH} exceeds the limit of 5']
       },
-})
+});
 
+// Custom validator function to limit array size
+function arrayLimit(val: ITag[]) {
+    return val.length <= 5;
+}
 
 // Middleware to auto-increment tag ID
 // UserSchema.pre("save", function (next) {

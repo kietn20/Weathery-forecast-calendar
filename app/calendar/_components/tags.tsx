@@ -1,5 +1,7 @@
+"use client";
+
 import { BookmarkMinus, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BlockPicker } from "react-color";
 import {
 	DropdownMenu,
@@ -21,9 +23,19 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 	const [title, setTitle] = useState(tagAttributes.title);
 	const [color, setColor] = useState(tagAttributes.color);
 	const [pickingColor, setPickingColor] = useState(false);
+	const [isVisible, setIsVisible] = useState(false);
+
+	// useEffect(() => {
+	// 	setTitle(tagAttributes.title);
+	// 	setColor(tagAttributes.color);
+	// }, [tagAttributes]);
 
 	const colorStyle = {
 		backgroundColor: color,
+	};
+
+	const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setTitle(event.target.value);
 	};
 
 	const handleColorChange = (newColor: any) => {
@@ -31,14 +43,15 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 	};
 	return (
 		<div
-			key={tagAttributes.title}
-			className="flex items-center justify-between py-5 gap-x-5 bg-orange-100"
+			className="flex items-center justify-between py-2 gap-x-5 bg-orange-0"
+			onMouseOver={() => setIsVisible(true)}
+			onMouseOut={() => setIsVisible(false)}
 		>
 			<div className="flex gap-x-3 items-center relative">
 				<DropdownMenu>
 					<DropdownMenuTrigger>
 						<div
-							className={`w-5 h-5 rounded-sm bg-[${color}] relative`}
+							className={`w-5 h-5 rounded-sm relative`}
 							style={colorStyle}
 							onClick={() => setPickingColor(!pickingColor)}
 						/>
@@ -58,15 +71,18 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 				</DropdownMenu>
 				<input
 					type="text"
-					value={title}
+					defaultValue={title}
 					className="w-[90%] px-1 border-0 rounded-md focus:border-black focus:bg-white bg-inherit"
-					
+					onChange={handleTitleChange}
 				/>
 			</div>
 			<div className="flex">
-				<Eye />
-				<EyeOff />
-				<BookmarkMinus />
+				{isVisible && (
+					<div className="flex">
+						<Eye />
+						<BookmarkMinus />
+					</div>
+				)}
 			</div>
 		</div>
 	);
