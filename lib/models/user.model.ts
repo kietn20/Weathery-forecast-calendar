@@ -64,7 +64,6 @@ function arrayLimit(val: ITag[]) {
 //     next();
 //   });
   
-
 const User: Model<IUser> = models?.User || model<IUser>("User", UserSchema);
 
 export default User;
