@@ -60,8 +60,6 @@ export async function updateTag(objectId: ObjectId, newTitle?: string, newColor?
 
         const user = await User.findOne({ clerkId: userId })
 
-        // const tagObjectId = new mongoose.Types.ObjectId(tagId)
-
         if (!user){
             return NextResponse.json({ message : "User not found"}, { status: 404});
         }
@@ -84,3 +82,33 @@ export async function updateTag(objectId: ObjectId, newTitle?: string, newColor?
         return NextResponse.json({ message: "Error adding tag", error }, { status: 500 })
     }
 }
+
+export async function deleteTag(objectId: ObjectId) {
+    const { userId } = auth();
+
+    if (!userId){
+        return NextResponse.json({ message : "Not Authenticated"}, { status: 401});
+    }
+
+    try {
+        await connect();
+
+        const user = await User.findOne({ clerkId: userId })
+
+        if (!user){
+            return NextResponse.json({ message : "User not found"}, { status: 404});
+        }
+
+        // Find the tag by id and delete it
+        user.tags = user.tags.filter(tag => tag?._id != objectId);
+
+        // Save the updated user
+        await user.save();
+
+        return JSON.parse(JSON.stringify(user));
+    } catch (error) {
+        console.error(error)
+        return NextResponse.json({ message: "Error adding tag", error }, { status: 500 })
+    }
+}
+

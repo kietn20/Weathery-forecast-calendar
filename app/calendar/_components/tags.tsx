@@ -12,7 +12,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ObjectId } from "mongoose";
-import { updateTag } from "@/lib/actions/user.action";
+import { deleteTag, updateTag } from "@/lib/actions/user.action";
 
 interface TagProps {
 	tagAttributes: {
@@ -26,47 +26,54 @@ interface TagProps {
 const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
 	const [title, setTitle] = useState<string>(tagAttributes.title);
 	const [color, setColor] = useState<string>(tagAttributes.color);
-	// const [title, setTitle] = useState('dog');
-	// const [color, setColor] = useState("#9c27b0");
 	const [pickingColor, setPickingColor] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
-
-	// useEffect(() => {
-	// 	setTitle(tagAttributes.title);
-	// 	setColor(tagAttributes.color);
-	// }, [tagAttributes]);
 
 	const colorStyle = {
 		backgroundColor: color,
 	};
 
-	const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setTimeout(async () => {
-			setTitle(event.target.value);
-			// data.tags[index].title = title
-			// setUserData(data)
-			const updatedUser = await updateTag(tagAttributes._id, title);
-			setUserData(updatedUser);
-		}, 10000);
-		console.log(title);
+	const debounce = (func: (...args: any[]) => void, wait: number) => {
+		let timeout: NodeJS.Timeout;
+		return (...args: any[]) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => func(...args), wait);
+		};
 	};
 
-	const handleColorChange = (newColor: any) => {
-		// setTimeout(() => {
-		// 	setColor(newColor.hex);
-		// 	console.log(title);
-		// 	setUserData(title);
-		// }, 10000);
+	const handleTitleChange = debounce(
+		async (event: React.ChangeEvent<HTMLInputElement>) => {
+			setTitle(event.target.value);
+			const updatedUser = await updateTag(
+				tagAttributes._id,
+				event.target.value
+			);
+			setUserData(updatedUser);
+		},
+		1000
+	);
+
+	const handleColorChange = debounce(async (newColor: any) => {
 		setColor(newColor.hex);
+		const updatedUser = await updateTag(
+			tagAttributes._id,
+			undefined,
+			newColor.hex
+		);
+		setUserData(updatedUser);
+	}, 0);
+
+	const handleDelete = async () => {
+		const updatedUser = await deleteTag(tagAttributes._id);
+		setUserData(updatedUser);
 	};
+
 	return (
 		<div
 			className="flex items-center justify-between py-2 gap-x-5 bg-orange-0"
 			onMouseOver={() => setIsVisible(true)}
 			onMouseOut={() => setIsVisible(false)}
 		>
-			{/* {JSON.stringify(data.tags[index].title)}
-			{JSON.stringify(index)} */}
 			<div className="flex gap-x-3 items-center relative">
 				<DropdownMenu>
 					<DropdownMenuTrigger>
@@ -102,9 +109,12 @@ const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
 						<div className="rounded-sm hover:bg-slate-200 ease-in transition duration-100">
 							<Eye />
 						</div>
-						<div className="rounded-sm hover:bg-slate-200 ease-in transition duration-100">
+						<button
+							className="rounded-sm hover:bg-slate-200 ease-in transition duration-100"
+							onClick={handleDelete}
+						>
 							<BookmarkMinus />
-						</div>
+						</button>
 					</div>
 				)}
 			</div>
