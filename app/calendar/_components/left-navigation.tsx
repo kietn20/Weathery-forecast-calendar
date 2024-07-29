@@ -4,6 +4,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { FolderPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Tag from "./tags";
+import { useToast } from "@/components/ui/use-toast";
 
 interface LeftNavigationProps {
 	data: {
@@ -19,6 +20,21 @@ interface LeftNavigationProps {
 
 const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
 	// console.log("Data passed to LeftNavigation:", data); // Debugging log
+	const { toast } = useToast();
+
+	const handleAddTag = () => {
+		if (data.tags.length < 5) {
+			console.log("Adding tag");
+		} else {
+			console.log("Reached maximum amount of Tags");
+			return toast({
+				variant: "destructive",
+				title: "Uh oh! Reached maximum amount of Tags (5)",
+				description:
+					"You have reached the limit of Tags. Please delete a tag to include a new tag.",
+			});
+		}
+	};
 	return (
 		<div className="flex flex-col justify-between w-[300px] bg-[#F9F9F9] items-center">
 			<div className="flex flex-col justify-start items-center pt-14">
@@ -28,7 +44,17 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
 				<div className="border-t-[1px] w-[90%] pt-2" />
 				<div className="flex justify-between items-center w-[70%] py-1 bg-red-0">
 					<h1 className="text-xl">Tags</h1>
-					<button className="hover:bg-slate-200 p-1 rounded-sm duration-100 transition ease-in">
+					<button
+						className="hover:bg-slate-200 p-1 rounded-sm duration-100 transition ease-in"
+						onClick={() => {
+							toast({
+								variant: "destructive",
+								title: "Uh oh! Reached maximum amount of Tags (5)",
+								description:
+									"You have reached the limit of Tags. Please delete a tag to include a new tag.",
+							});
+						}}
+					>
 						<FolderPlus />
 					</button>
 				</div>

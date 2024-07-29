@@ -57,7 +57,7 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 					alt="calendar-page-loading-gif"
 				/>
 				<span className="text-3xl opacity-60 blink_me italic">
-					Loading
+					Loading Calendar
 				</span>
 			</div>
 		);

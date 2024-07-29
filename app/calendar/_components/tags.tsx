@@ -43,7 +43,7 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 	};
 	return (
 		<div
-			className="flex items-center justify-between py-2 gap-x-5 bg-orange-0"
+			className="flex items-center justify-between py-2 gap-x-5 bg-orange-100"
 			onMouseOver={() => setIsVisible(true)}
 			onMouseOut={() => setIsVisible(false)}
 		>
@@ -78,9 +78,13 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 			</div>
 			<div className="flex">
 				{isVisible && (
-					<div className="flex">
-						<Eye />
-						<BookmarkMinus />
+					<div className="flex items-center gap-x-1">
+						<div className="rounded-sm hover:bg-slate-200 ease-in transition duration-100">
+							<Eye />
+						</div>
+						<div className="rounded-sm hover:bg-slate-200 ease-in transition duration-100">
+							<BookmarkMinus />
+						</div>
 					</div>
 				)}
 			</div>
