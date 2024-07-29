@@ -12,17 +12,16 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 	const [loading, setLoading] = useState(true);
 	const [userData, setUserData] = useState(null);
 
-	
 	useEffect(() => {
 		if (!isLoaded) {
 			return;
 		}
-		
+
 		if (!isSignedIn) {
 			redirect("/");
 			return;
 		}
-		
+
 		const fetchUserFromApi = async () => {
 			try {
 				const response = await fetch("/api/data", {
@@ -31,7 +30,7 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 						method: "GET",
 					},
 				});
-				
+
 				if (response.ok) {
 					const data = await response.json();
 					// console.log("Fetched user data:", data); // Debugging log
@@ -40,10 +39,10 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 			} catch (error) {
 				console.log(error);
 			} finally {
-				setLoading(false)
+				setLoading(false);
 			}
 		};
-		
+
 		fetchUserFromApi();
 	}, [isLoaded, isSignedIn]);
 
@@ -65,7 +64,9 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<div className="flex">
-			{userData && <LeftNavigation data={userData} />}
+			{userData && (
+				<LeftNavigation data={userData} setUserData={setUserData} />
+			)}
 			<main className="w-screen h-screen overflow-hidden">
 				{children}
 			</main>

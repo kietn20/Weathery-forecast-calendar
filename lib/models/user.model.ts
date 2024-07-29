@@ -1,9 +1,10 @@
-import { Document, Model, Schema, model, models } from "mongoose";
+import { Document, Model, ObjectId, Schema, model, models } from "mongoose";
 import { TagSchema } from "./tag.model";
 // import {eventObjectSchema, IEventObject } from "./eventObject.model"
 // import { tagSchema } from "./tag.model";
 
 interface ITag {
+    _id: ObjectId;
     title: string;
     color: string;
   }

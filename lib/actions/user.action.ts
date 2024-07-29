@@ -3,6 +3,8 @@
 import User from "../models/user.model";
 import { connect } from "../db";
 import { NextResponse } from "next/server";
+import { ObjectId } from "mongoose";
+import { auth } from "@clerk/nextjs/server";
 
 export async function createUser(user: any) {
     try {
@@ -38,7 +40,45 @@ export async function addNewTag(clerkId: string, newTag: { title: string, color:
             { new: true, runValidators: true }
         );
 
+        return JSON.parse(JSON.stringify(updatedUser));
         return NextResponse.json(updatedUser, { status: 200 })
+    } catch (error) {
+        console.error(error)
+        return NextResponse.json({ message: "Error adding tag", error }, { status: 500 })
+    }
+}
+
+export async function updateTag(objectId: ObjectId, newTitle?: string, newColor?: string) {
+    const { userId } = auth();
+
+    if (!userId){
+        return NextResponse.json({ message : "Not Authenticated"}, { status: 401});
+    }
+
+    try {
+        await connect();
+
+        const user = await User.findOne({ clerkId: userId })
+
+        // const tagObjectId = new mongoose.Types.ObjectId(tagId)
+
+        if (!user){
+            return NextResponse.json({ message : "User not found"}, { status: 404});
+        }
+
+        // Find the tag by id and update its attributes
+        const tag = user.tags.find(tag => tag?._id == objectId);
+        if (!tag) {
+            return NextResponse.json({ message: "Tag not found" }, { status: 404 })
+        }
+
+        if (newTitle) tag.title = newTitle;
+        if (newColor) tag.color = newColor;
+
+        // Save the updated user
+        await user.save();
+
+        return JSON.parse(JSON.stringify(user));
     } catch (error) {
         console.error(error)
         return NextResponse.json({ message: "Error adding tag", error }, { status: 500 })

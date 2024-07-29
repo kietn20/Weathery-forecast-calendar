@@ -11,17 +11,23 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ObjectId } from "mongoose";
+import { updateTag } from "@/lib/actions/user.action";
 
 interface TagProps {
 	tagAttributes: {
+		_id: ObjectId;
 		title: string;
 		color: string;
 	};
+	setUserData: any;
 }
 
-const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
-	const [title, setTitle] = useState(tagAttributes.title);
-	const [color, setColor] = useState(tagAttributes.color);
+const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
+	const [title, setTitle] = useState<string>(tagAttributes.title);
+	const [color, setColor] = useState<string>(tagAttributes.color);
+	// const [title, setTitle] = useState('dog');
+	// const [color, setColor] = useState("#9c27b0");
 	const [pickingColor, setPickingColor] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -35,10 +41,22 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 	};
 
 	const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setTitle(event.target.value);
+		setTimeout(async () => {
+			setTitle(event.target.value);
+			// data.tags[index].title = title
+			// setUserData(data)
+			const updatedUser = await updateTag(tagAttributes._id, title);
+			setUserData(updatedUser);
+		}, 10000);
+		console.log(title);
 	};
 
 	const handleColorChange = (newColor: any) => {
+		// setTimeout(() => {
+		// 	setColor(newColor.hex);
+		// 	console.log(title);
+		// 	setUserData(title);
+		// }, 10000);
 		setColor(newColor.hex);
 	};
 	return (
@@ -47,6 +65,8 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 			onMouseOver={() => setIsVisible(true)}
 			onMouseOut={() => setIsVisible(false)}
 		>
+			{/* {JSON.stringify(data.tags[index].title)}
+			{JSON.stringify(index)} */}
 			<div className="flex gap-x-3 items-center relative">
 				<DropdownMenu>
 					<DropdownMenuTrigger>

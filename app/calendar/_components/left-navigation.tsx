@@ -5,6 +5,7 @@ import { FolderPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Tag from "./tags";
 import { useToast } from "@/components/ui/use-toast";
+import { addNewTag } from "@/lib/actions/user.action";
 
 interface LeftNavigationProps {
 	data: {
@@ -16,27 +17,42 @@ interface LeftNavigationProps {
 		events: [];
 		tags: [];
 	};
+	setUserData: any;
 }
 
-const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
+interface Tag {
+	title: string;
+	color: string;
+}
+
+const LeftNavigation: React.FC<LeftNavigationProps> = ({
+	data,
+	setUserData,
+}) => {
 	// console.log("Data passed to LeftNavigation:", data); // Debugging log
+	// const [tags, setTags] = useState<Tag[]>(data.tags);
 	const { toast } = useToast();
 
-	const handleAddTag = () => {
+	const handleAddTag = async () => {
 		if (data.tags.length < 5) {
 			console.log("Adding tag");
+			const newUntitledTag = { title: "Untitled", color: "#d9e3f0" };
+			// setTags([...data.tags, newUntitledTag]);
+			const updatedUser = await addNewTag(data.clerkId, newUntitledTag);
+			setUserData(updatedUser);
 		} else {
 			console.log("Reached maximum amount of Tags");
 			toast({
 				variant: "destructive",
 				title: "Uh oh! Reached maximum amount of Tags (5)",
 				description:
-					"You have reached the limit of Tags. Please delete a tag to include a new tag.",
+					"Please delete a tag to include a new tag.",
 			});
 		}
 	};
 	return (
 		<div className="flex flex-col justify-between w-[300px] bg-[#F9F9F9] items-center">
+			{/* {JSON.stringify(data.tags, null, 2)} */}
 			<div className="flex flex-col justify-start items-center">
 				<div className="bg-green-0">
 					<Calendar />
@@ -52,8 +68,8 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
 					</button>
 				</div>
 				<div className="w-[85%] pl-5">
-					{data.tags.map((tag: any) => (
-						<Tag key={tag.title} tagAttributes={tag} />
+					{data.tags.map((tag: any, index: number) => (
+						<Tag key={tag._id} tagAttributes={tag} setUserData={setUserData}/>
 					))}
 				</div>
 			</div>
