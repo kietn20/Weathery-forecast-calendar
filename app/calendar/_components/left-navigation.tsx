@@ -27,7 +27,7 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
 			console.log("Adding tag");
 		} else {
 			console.log("Reached maximum amount of Tags");
-			return toast({
+			toast({
 				variant: "destructive",
 				title: "Uh oh! Reached maximum amount of Tags (5)",
 				description:
@@ -37,28 +37,21 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ data }) => {
 	};
 	return (
 		<div className="flex flex-col justify-between w-[300px] bg-[#F9F9F9] items-center">
-			<div className="flex flex-col justify-start items-center pt-14">
-				<div>
-					<Calendar className="px-10" />
+			<div className="flex flex-col justify-start items-center">
+				<div className="bg-green-0">
+					<Calendar />
 				</div>
 				<div className="border-t-[1px] w-[90%] pt-2" />
-				<div className="flex justify-between items-center w-[70%] py-1 bg-red-0">
+				<div className="flex justify-between items-center w-[80%] py-1 bg-red-0">
 					<h1 className="text-xl">Tags</h1>
 					<button
 						className="hover:bg-slate-200 p-1 rounded-sm duration-100 transition ease-in"
-						onClick={() => {
-							toast({
-								variant: "destructive",
-								title: "Uh oh! Reached maximum amount of Tags (5)",
-								description:
-									"You have reached the limit of Tags. Please delete a tag to include a new tag.",
-							});
-						}}
+						onClick={handleAddTag}
 					>
 						<FolderPlus />
 					</button>
 				</div>
-				<div className="w-[75%] pl-5">
+				<div className="w-[85%] pl-5">
 					{data.tags.map((tag: any) => (
 						<Tag key={tag.title} tagAttributes={tag} />
 					))}

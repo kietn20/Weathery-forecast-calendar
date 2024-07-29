@@ -43,7 +43,7 @@ const Tag: React.FC<TagProps> = ({ tagAttributes }) => {
 	};
 	return (
 		<div
-			className="flex items-center justify-between py-2 gap-x-5 bg-orange-100"
+			className="flex items-center justify-between py-2 gap-x-5 bg-orange-0"
 			onMouseOver={() => setIsVisible(true)}
 			onMouseOut={() => setIsVisible(false)}
 		>
