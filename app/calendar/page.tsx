@@ -9,9 +9,11 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { Navbar } from "@/components/navbar";
 import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
+import { useUserContext } from "@/hooks/UserContext";
 
 const CalendarPage = () => {
 	const { user } = useUser();
+	const { userData, setUserData } = useUserContext();
 
 	// useEffect(() => {
 	// 	console.log(user);
@@ -21,6 +23,7 @@ const CalendarPage = () => {
 	return (
 		<div className="flex flex-col">
 			<div className="h-screen pt-24 px-2">
+				{}
 				<FullCalendar
 					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
 					headerToolbar={{
@@ -31,9 +34,7 @@ const CalendarPage = () => {
 					height="90%"
 					handleWindowResize={true}
 					expandRows={true}
-					events={[
-						{ id: "a", title: "my event", start: "2024-07-29" },
-					]}
+					events={userData?.events}
 					nowIndicator={true}
 					editable={true}
 					droppable={true}

@@ -1,10 +1,10 @@
 import { Navbar } from "@/components/navbar";
 
-interface RightNavigationProps {
-	setEvents: any;
-}
+// interface RightNavigationProps {
+// 	setEvents: any;
+// }
 
-const RightNavigation: React.FC<RightNavigationProps> = ({ setEvents }) => {
+const RightNavigation = () => {
 	return (
 		<div className="h-screen w-[300px] bg-[#F9F9F9]">
 			<Navbar />

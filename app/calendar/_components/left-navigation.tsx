@@ -6,53 +6,49 @@ import { useEffect, useState } from "react";
 import Tag from "./tags";
 import { useToast } from "@/components/ui/use-toast";
 import { addNewTag } from "@/lib/actions/user.action";
+import { useUserContext } from "@/hooks/UserContext";
 
-interface LeftNavigationProps {
-	data: {
-		clerkId: string;
-		username: string;
-		email: string;
-		firstName?: string;
-		lastName?: string;
-		events: [];
-		tags: [];
-	};
-	setUserData: any;
-}
+// interface LeftNavigationProps {
+// 	data: {
+// 		clerkId: string;
+// 		username: string;
+// 		email: string;
+// 		firstName?: string;
+// 		lastName?: string;
+// 		events: [];
+// 		tags: [];
+// 	};
+// 	setUserData: any;
+// }
 
-interface Tag {
-	title: string;
-	color: string;
-}
+// interface Tag {
+// 	title: string;
+// 	color: string;
+// }
 
-const LeftNavigation: React.FC<LeftNavigationProps> = ({
-	data,
-	setUserData,
-}) => {
-	// console.log("Data passed to LeftNavigation:", data); // Debugging log
-	// const [tags, setTags] = useState<Tag[]>(data.tags);
+const LeftNavigation = () => {
+	const { userData, setUserData } = useUserContext();
 	const { toast } = useToast();
 
 	const handleAddTag = async () => {
-		if (data.tags.length < 5) {
+		if (userData!.tags.length < 5) {
 			console.log("Adding tag");
 			const newUntitledTag = { title: "Untitled", color: "#d9e3f0" };
 			// setTags([...data.tags, newUntitledTag]);
-			const updatedUser = await addNewTag(data.clerkId, newUntitledTag);
+			const updatedUser = await addNewTag(userData!.clerkId, newUntitledTag);
 			setUserData(updatedUser);
 		} else {
 			console.log("Reached maximum amount of Tags");
 			toast({
 				variant: "destructive",
 				title: "Uh oh! Reached maximum amount of Tags (5)",
-				description:
-					"Please delete a tag to include a new tag.",
+				description: "Please delete a tag to include a new tag.",
 			});
 		}
 	};
 	return (
 		<div className="flex flex-col justify-between w-[300px] bg-[#F9F9F9] items-center">
-			{/* {JSON.stringify(data.tags, null, 2)} */}
+			{/* {JSON.stringify(data, null, 2)} */}
 			<div className="flex flex-col justify-start items-center">
 				<div className="bg-green-0">
 					<Calendar />
@@ -68,8 +64,12 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({
 					</button>
 				</div>
 				<div className="w-[85%] pl-5">
-					{data.tags.map((tag: any, index: number) => (
-						<Tag key={tag._id} tagAttributes={tag} setUserData={setUserData}/>
+					{userData?.tags.map((tag: any, index: number) => (
+						<Tag
+							key={tag._id}
+							tagAttributes={tag}
+							setUserData={setUserData}
+						/>
 					))}
 				</div>
 			</div>
