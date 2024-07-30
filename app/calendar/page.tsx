@@ -31,7 +31,9 @@ const CalendarPage = () => {
 					height="90%"
 					handleWindowResize={true}
 					expandRows={true}
-					events={{}}
+					events={[
+						{ id: "a", title: "my event", start: "2024-07-29" },
+					]}
 					nowIndicator={true}
 					editable={true}
 					droppable={true}

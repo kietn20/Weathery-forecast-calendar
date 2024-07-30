@@ -11,6 +11,9 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 	const { isSignedIn, isLoaded, user } = useUser();
 	const [loading, setLoading] = useState(true);
 	const [userData, setUserData] = useState(null);
+	const [events, setEvents] = useState([
+		{ id: "a", title: "my event", start: "2024-07-29" },
+	]);
 
 	useEffect(() => {
 		if (!isLoaded) {
@@ -70,7 +73,7 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 			<main className="w-screen h-screen overflow-hidden">
 				{children}
 			</main>
-			<RightNavigation />
+			<RightNavigation setEvents={setEvents} />
 		</div>
 	);
 };
