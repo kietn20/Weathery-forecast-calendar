@@ -22,8 +22,8 @@ const CalendarPage = () => {
 
 	return (
 		<div className="flex flex-col">
-			<div className="h-screen pt-24 px-2">
-				{}
+			<Navbar />
+			<div className="h-screen pt-9 px-2">
 				<FullCalendar
 					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
 					headerToolbar={{
