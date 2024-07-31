@@ -40,7 +40,7 @@ const CalendarPage = () => {
 					droppable={true}
 					selectable={true}
 					selectMirror={true}
-					dateClick={() => console.log}
+					dateClick={() => console.log("clicking")}
 					drop={() => console.log}
 					eventClick={() => console.log}
 				/>
