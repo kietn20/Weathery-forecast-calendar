@@ -14,6 +14,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import NewEventForm from "./new-event-form";
+import { useUserContext } from "@/hooks/UserContext";
+import { Draggable } from "@fullcalendar/interaction/index.js";
 
 // interface RightNavigationProps {
 // 	setEvents: any;
@@ -25,6 +27,22 @@ const RightNavigation = () => {
 	// 	month: "long",
 	// 	day: "numeric",
 	// });
+	const { userData, setUserData } = useUserContext();
+
+	useEffect(() => {
+		let draggableEl = document.getElementById("draggable-el");
+		if (draggableEl) {
+			new Draggable(draggableEl, {
+				itemSelector: ".fc-event",
+				eventData: function (eventEl) {
+					let title = eventEl.getAttribute("title");
+					let id = eventEl.getAttribute("data");
+					let start = eventEl.getAttribute("start");
+					return { title, id, start };
+				},
+			});
+		}
+	}, []);
 
 	return (
 		<div className="h-screen w-[300px] bg-[#F9F9F9] flex flex-col justify-between items-center p-3">
@@ -59,9 +77,21 @@ const RightNavigation = () => {
 				<div className="border-t-[1px] w-[100%] my-5" />
 			</div>
 
-			<div className="w-[80%] flex justify-center">
-				<div>
-					
+			<div className="w-full flex flex-col justify-center items-center">
+				<div
+					id="draggable-el"
+					className="flex flex-col justify-center items-center bg-red-50"
+				>
+					<span>Events</span>
+					{userData.events.map((event: any) => (
+						<div
+							className="fc-event border p-2 rounded-md bg-slate-200"
+							title={event.title}
+							key={event._id}
+						>
+							{event.title}
+						</div>
+					))}
 				</div>
 				<Image
 					alt="hero-reading"
