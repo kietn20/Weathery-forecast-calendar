@@ -99,7 +99,7 @@ const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
 				<input
 					type="text"
 					defaultValue={title}
-					className="w-[90%] px-1 border-0 rounded-md focus:border-black focus:bg-white bg-inherit"
+					className="w-[90%] px-1 border-0 rounded-md focus:border-black focus:bg-white bg-inherit font-medium text-normal"
 					onChange={handleTitleChange}
 				/>
 			</div>

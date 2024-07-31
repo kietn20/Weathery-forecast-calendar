@@ -7,7 +7,7 @@ import { CircleArrowRight } from "lucide-react";
 
 const RightNavigation = () => {
 	return (
-		<div className="h-screen w-[300px] bg-[#F9F9F9] bg-indigo-100 flex flex-col justify-between items-center p-3">
+		<div className="h-screen w-[300px] bg-[#F9F9F9] flex flex-col justify-between items-center p-3">
 			<div className="flex flex-col items-center">
 				<div className="flex flex-col gap-y-2">
 					<div className="bg-[#3181AE] rounded-sm p-2 w-[218px] h-[51px] flex justify-center items-center gap-x-5 relative">
@@ -35,8 +35,15 @@ const RightNavigation = () => {
 						</div>
 					</div>
 				</div>
-				<div>
-					creating new event
+				<div className="flex flex-col bg-lime-0 w-full mt-5 justify-start items-start">
+					<span className="font-medium text-sm">New Event</span>
+					<form action="" className="mt-3">
+						<input
+							type="text"
+							placeholder="Title"
+							className="text-sm bg-[#F9F9F9] focus:bg-[#efefef] font-light p-2 rounded-md border border-[#F9F9F9] hover:border-[#efefef] hover:border-opacity-100"
+						/>
+					</form>
 				</div>
 			</div>
 			<div>Image</div>
