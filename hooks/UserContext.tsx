@@ -22,7 +22,7 @@ interface UserData {
 }
 
 interface UserContextType {
-	userData: UserData | null;
+	userData: UserData | any;
 	setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
 }
 
@@ -30,7 +30,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
 	const { isSignedIn, isLoaded, user } = useUser();
-	const [userData, setUserData] = useState<UserData | null>(null);
+	const [userData, setUserData] = useState<UserData | any>(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {

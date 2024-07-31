@@ -4,6 +4,7 @@ import {
 	CircleArrowRight,
 	Clock,
 	Repeat,
+	User,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
@@ -42,12 +43,11 @@ const NewEventForm = () => {
 	const [allDay, setAllDay] = useState(true);
 	const [repeatOption, setRepeatOption] = useState("");
 	const [description, setDescription] = useState("");
-	const [owner, setOwner] = useState(userData?.tags[0]["title"] || '');
+	const [owner, setOwner] = useState(userData?.tags[0]["title"]);
 
 	return (
 		<div className="flex flex-col bg-lime-0 w-full mt-5 justify-start items-start">
 			<span className="font-medium text-sm">New Event</span>
-			{JSON.stringify(owner)}
 			<form action="" className="mt-3">
 				<input
 					type="text"
@@ -164,7 +164,27 @@ const NewEventForm = () => {
 						</SelectContent>
 					</Select>
 				</div>
-
+				<div className="flex items-center my-4 justify-start group">
+					<Select value={owner} onValueChange={setOwner}>
+						<SelectTrigger className="w-full flex justify-between items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-100">
+							<div className="w-full flex gap-x-3 items-center">
+								<User className="w-[14px] h-[14px]" />
+								<SelectValue placeholder="Owner" className="" />
+							</div>
+						</SelectTrigger>
+						<SelectContent>
+							<SelectGroup>
+								{userData?.tags.map((tag: any) => (
+									<SelectItem key={tag._id} value={tag.title}>
+										<span className={`text-[${tag.color}]`}>
+											{tag.title}
+										</span>
+									</SelectItem>
+								))}
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+				</div>
 				<div className="border-t-[1px] w-[100%] my-5" />
 				<div className="text-xs bg-[#F9F9F9] focus:bg-[#efefef] font-light">
 					<Textarea
@@ -172,38 +192,6 @@ const NewEventForm = () => {
 						className="bg-[#F9F9F9] border border-[#F9F9F9] hover:border-[#d5d5d5] hover:border-opacity-100 resize-none focus:border-opacity-0"
 						onChange={(event) => setDescription(event.target.value)}
 					/>
-				</div>
-				<div className="flex items-center my-4 justify-start group">
-					<Select value="" onValueChange={setRepeatOption}>
-						<SelectTrigger className="w-full flex justify-between items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-100">
-							<div className="w-full flex gap-x-3 items-center">
-								<Repeat className="w-[14px] h-[14px]" />
-								<SelectValue placeholder="Owner" className="" />
-							</div>
-						</SelectTrigger>
-						<SelectContent>
-							<SelectGroup>
-								<SelectItem value="everyday">
-									Everyday
-								</SelectItem>
-								<SelectItem value="every-weekend">
-									Every weekend day
-								</SelectItem>
-								<SelectItem value="every-week">
-									Every week
-								</SelectItem>
-								<SelectItem value="every-2-week">
-									Every 2 week
-								</SelectItem>
-								<SelectItem value="every-month">
-									Every month
-								</SelectItem>
-								<SelectItem value="every-year">
-									Every year
-								</SelectItem>
-							</SelectGroup>
-						</SelectContent>
-					</Select>
 				</div>
 				{/* <div className="bg-red-50 flex justify-center">
 					<button>

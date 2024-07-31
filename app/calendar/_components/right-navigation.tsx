@@ -56,8 +56,13 @@ const RightNavigation = () => {
 					</div>
 				</div>
 				<NewEventForm />
+				<div className="border-t-[1px] w-[100%] my-5" />
 			</div>
+
 			<div className="w-[80%] flex justify-center">
+				<div>
+					
+				</div>
 				<Image
 					alt="hero-reading"
 					width={100}
