@@ -1,7 +1,7 @@
 import mongoose, {Schema, Document, Model, models, model } from "mongoose";
 
 export type IEventObject = {
-    id?: string, 
+    // id?: string, 
     title?: string,
     addDay?: boolean,
     start?: Date,
@@ -15,8 +15,8 @@ export type IEventObject = {
     extendedProps?: { tag: string }
 }
 
-const eventObjectSchema: Schema = new Schema({
-    id: { type: String, required: true},
+const eventSchema: Schema = new Schema({
+    // id: { type: String, required: true},
     title: { type: String, required: true },
     allDay: { type: Boolean, required: true},
     start: { type: Date, required: true },
@@ -30,6 +30,6 @@ const eventObjectSchema: Schema = new Schema({
     extendedProps: { type: Object, required: true }
   });
 
-  const EventObject: Model<IEventObject> = models?.EventObject || model<IEventObject>('EventObject', eventObjectSchema);
+  const EventObject: Model<IEventObject> = models?.EventObject || model<IEventObject>('EventObject', eventSchema);
 
-  export { eventObjectSchema }
+  export { eventSchema }

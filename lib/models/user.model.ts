@@ -1,5 +1,6 @@
 import { Document, Model, ObjectId, Schema, model, models } from "mongoose";
 import { TagSchema } from "./tag.model";
+import { eventSchema } from "./eventObject.model";
 // import {eventObjectSchema, IEventObject } from "./eventObject.model"
 // import { tagSchema } from "./tag.model";
 
@@ -39,7 +40,10 @@ const UserSchema = new Schema({
     lastName: {
         type: String
     },
-    events: [],
+    events: {
+        type: [eventSchema],
+        default: []
+    },
     tags: {
         type: [TagSchema],
         default: [],

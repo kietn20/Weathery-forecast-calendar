@@ -111,3 +111,35 @@ export async function deleteTag(objectId: ObjectId) {
         return NextResponse.json({ message: "Error adding tag", error }, { status: 500 })
     }
 }
+
+export async function addEventToDB(newEventData: any) {
+    const { userId } = auth();
+
+    if (!userId){
+        return NextResponse.json({ message : "Not Authenticated"}, { status: 401});
+    }
+
+    try {
+        await connect();
+
+        const user = await User.findOne({ clerkId: userId })
+
+        if (!user){
+            return NextResponse.json({ message : "User not found"}, { status: 404});
+        }
+
+        const newEvent = { title: newEventData.title, start: newEventData.start, allDay: newEventData.allDay };
+
+        // Use $push to add new tag into tags array
+        const updatedUser = await User.findOneAndUpdate(
+            { userId },
+            { $push: { events: newEvent }},
+            { new: true, runValidators: true }
+        );
+        console.log('updatedUser from user.actions:', JSON.stringify(updatedUser))
+        return JSON.parse(JSON.stringify(updatedUser));
+    } catch (error) {
+        console.error(error)
+        return NextResponse.json({ message: "Error adding event", error }, { status: 500 })
+    }
+}

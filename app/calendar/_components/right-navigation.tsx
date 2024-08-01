@@ -83,7 +83,7 @@ const RightNavigation = () => {
 					className="flex flex-col justify-center items-center bg-red-50"
 				>
 					<span>Events</span>
-					{userData.events.map((event: any) => (
+					{userData?.events.map((event: any) => (
 						<div
 							className="fc-event border p-2 rounded-md bg-slate-200"
 							title={event.title}

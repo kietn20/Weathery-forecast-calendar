@@ -29,6 +29,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useUserContext } from "@/hooks/UserContext";
+import { DropArg } from "@fullcalendar/interaction/index.js";
 
 const NewEventForm = () => {
 	const { userData, setUserData } = useUserContext();
@@ -43,6 +44,8 @@ const NewEventForm = () => {
 		event.preventDefault();
 		console.log("handling submit");
 	};
+
+	
 	return (
 		<div className="flex flex-col bg-lime-0 w-full mt-5 justify-start items-start">
 			<span className="font-medium text-sm">New Event</span>
