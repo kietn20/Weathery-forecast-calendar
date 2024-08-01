@@ -31,13 +31,7 @@ import { format } from "date-fns";
 import { useUserContext } from "@/hooks/UserContext";
 
 const NewEventForm = () => {
-	// const currentDate = new Date().toLocaleDateString("en-US", {
-	// 	weekday: "short",
-	// 	month: "long",
-	// 	day: "numeric",
-	// });
 	const { userData, setUserData } = useUserContext();
-
 	const [startDate, setStartDate] = useState<Date>();
 	const [endDate, setEndDate] = useState<Date>();
 	const [allDay, setAllDay] = useState(true);
@@ -45,14 +39,18 @@ const NewEventForm = () => {
 	const [description, setDescription] = useState("");
 	const [owner, setOwner] = useState(userData?.tags[0]["title"]);
 
+	const handleSubmit = (event: any) => {
+		event.preventDefault();
+		console.log("handling submit");
+	};
 	return (
 		<div className="flex flex-col bg-lime-0 w-full mt-5 justify-start items-start">
 			<span className="font-medium text-sm">New Event</span>
-			<form action="" className="mt-3">
+			<form action="" className="mt-3 relative" onSubmit={handleSubmit}>
 				<input
 					type="text"
 					placeholder="Title"
-					className="text-sm bg-[#F9F9F9] focus:bg-[#efefef] font-light p-2 rounded-md border border-[#F9F9F9] hover:border-[#ebebeb] hover:border-opacity-100 duration-150"
+					className="text-sm bg-[#F9F9F9] focus:bg-[#efefef] font-light p-2 rounded-md border border-[#F9F9F9] hover:border-[#d5d5d5] hover:border-opacity-100 duration-150"
 				/>
 				<div className="border-t-[1px] w-[100%] my-2" />
 				<div className="flex justify-start items-center gap-x-2 mt-3">
@@ -101,7 +99,11 @@ const NewEventForm = () => {
 										{format(endDate, "E MMM d")}
 									</span>
 								) : (
-									<span className="text-gray-400 group-hover:text-gray-500 duration-100">
+									<span
+										className={`text-gray-400 group-hover:text-gray-500 duration-100 ${
+											allDay && `line-through`
+										}`}
+									>
 										End Date
 									</span>
 								)}
@@ -131,7 +133,7 @@ const NewEventForm = () => {
 				</div>
 				<div className="flex items-center mt-4 justify-start group">
 					<Select onValueChange={setRepeatOption}>
-						<SelectTrigger className="w-full flex items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-100">
+						<SelectTrigger className="w-full flex items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-300 hover:border-[#939393] focus:border-hidden">
 							<div className="w-full flex gap-x-3 items-center">
 								<Repeat className="w-[14px] h-[14px]" />
 								<SelectValue
@@ -166,7 +168,7 @@ const NewEventForm = () => {
 				</div>
 				<div className="flex items-center my-4 justify-start group">
 					<Select value={owner} onValueChange={setOwner}>
-						<SelectTrigger className="w-full flex justify-between items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-100">
+						<SelectTrigger className="w-full flex justify-between items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-300 hover:border-[#939393] focus:border-hidden">
 							<div className="w-full flex gap-x-3 items-center">
 								<User className="w-[14px] h-[14px]" />
 								<SelectValue placeholder="Owner" className="" />
@@ -185,19 +187,25 @@ const NewEventForm = () => {
 						</SelectContent>
 					</Select>
 				</div>
-				<div className="border-t-[1px] w-[100%] my-5" />
-				<div className="text-xs bg-[#F9F9F9] focus:bg-[#efefef] font-light">
+				{/* <div className="border-t-[1px] w-[100%] my-5" /> */}
+				<div className="text-xs border-[#9ca3af] focus:bg-[#efefef] font-light group">
 					<Textarea
 						placeholder="description"
-						className="bg-[#F9F9F9] border border-[#F9F9F9] hover:border-[#d5d5d5] hover:border-opacity-100 resize-none focus:border-opacity-0"
+						className="bg-[#F9F9F9] hover:border-[#939393] resize-none focus:border-hidden truncate text-gray-400 group-hover:text-gray-900 duration-300"
+						spellCheck={false}
 						onChange={(event) => setDescription(event.target.value)}
 					/>
 				</div>
-				{/* <div className="bg-red-50 flex justify-center">
-					<button>
-						<BadgePlus />
-					</button>
-				</div> */}
+				<button
+					className="relative inline-block text-sm group my-5"
+					onClick={() => console.log("submitting")}
+				>
+					<span className="relative z-10 block px-16 py-1 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+						<span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
+						<span className="absolute left-0 w-[110%] h-48 -ml-2 transition-all duration-500 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease rounded-3xl"></span>
+						<span className="relative">Create Event</span>
+					</span>
+				</button>
 			</form>
 		</div>
 	);

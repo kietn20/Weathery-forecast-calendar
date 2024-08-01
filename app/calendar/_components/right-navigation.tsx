@@ -74,7 +74,7 @@ const RightNavigation = () => {
 					</div>
 				</div>
 				<NewEventForm />
-				<div className="border-t-[1px] w-[100%] my-5" />
+				<div className="border-t-[1px] w-[100%] mb-5" />
 			</div>
 
 			<div className="w-full flex flex-col justify-center items-center">
