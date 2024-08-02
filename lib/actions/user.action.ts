@@ -128,7 +128,7 @@ export async function addEventToDB(newEventData: any) {
             return NextResponse.json({ message : "User not found"}, { status: 404});
         }
 
-        const newEvent = { title: newEventData.title, start: newEventData.start, allDay: newEventData.allDay };
+        const newEvent = { title: newEventData.title, start: newEventData.start, end: newEventData.end, allDay: newEventData.allDay, repeat: newEventData.repeat, tag: newEventData.tag, description: newEventData.description };
 
         // Use $push to add new tag into tags array
         const updatedUser = await User.findOneAndUpdate(

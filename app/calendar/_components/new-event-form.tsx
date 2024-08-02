@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	BadgePlus,
 	CalendarIcon,
@@ -31,13 +33,13 @@ import { format } from "date-fns";
 import { useUserContext } from "@/hooks/UserContext";
 import { DropArg } from "@fullcalendar/interaction/index.js";
 import { toast } from "@/components/ui/use-toast";
+import { addEventToDB } from "@/lib/actions/user.action";
 
 const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 	const { userData, setUserData, newEvent, setNewEvent } = useUserContext();
 	const inputTitleRef = useRef<any>("");
-	const startDateRef = useRef<any>();
 
-	const handleSubmit = (event: any) => {
+	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
 		if (draggableEventCount >= 12) {
@@ -53,10 +55,18 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 			if (newEvent.start == "") {
 				setDraggableEventCount(draggableEventCount + 1);
 			}
-			setUserData((prevUserData: any) => ({
-				...prevUserData,
-				events: [...prevUserData?.events, newEvent],
-			}));
+
+			// setUserData((prevUserData: any) => ({
+			// 	...prevUserData,
+			// 	events: [...prevUserData?.events, newEvent],
+			// }));
+			const updatedUser = await addEventToDB(JSON.stringify(newEvent));
+			setUserData(updatedUser);
+			console.log(
+				"updatedUser after adding newevent to DB:",
+				JSON.stringify(userData)
+			);
+
 			setNewEvent({
 				title: "",
 				start: "",
@@ -66,6 +76,7 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 				tag: "",
 				description: "",
 			});
+
 			inputTitleRef.current.value = "";
 			console.log("done submit");
 		}
