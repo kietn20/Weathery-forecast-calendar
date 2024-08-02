@@ -60,12 +60,14 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 			// 	...prevUserData,
 			// 	events: [...prevUserData?.events, newEvent],
 			// }));
-			const updatedUser = await addEventToDB(JSON.stringify(newEvent));
+			const fixedEndDate = newEvent.end;
+			if (newEvent.end) {
+				fixedEndDate.setDate(fixedEndDate.getDate() + 1);
+			}
+
+			setNewEvent({ ...newEvent, end: fixedEndDate });
+			const updatedUser = await addEventToDB(newEvent);
 			setUserData(updatedUser);
-			console.log(
-				"updatedUser after adding newevent to DB:",
-				JSON.stringify(userData)
-			);
 
 			setNewEvent({
 				title: "",
@@ -73,7 +75,7 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 				end: "",
 				allDay: true,
 				repeat: "",
-				tag: "",
+				backgroundColor: "",
 				description: "",
 			});
 
@@ -172,12 +174,12 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 							<Calendar
 								mode="single"
 								selected={newEvent.end}
-								onSelect={(selectedEndDate) =>
+								onSelect={(selectedEndDate) => {
 									setNewEvent({
 										...newEvent,
 										end: selectedEndDate,
-									})
-								}
+									});
+								}}
 								initialFocus
 							/>
 						</PopoverContent>
@@ -240,21 +242,29 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 				</div>
 				<div className="flex items-center my-4 justify-start group">
 					<Select
-						defaultValue={userData.tags[0].title}
+						// defaultValue={userData.tags[0].title}
 						onValueChange={(selectedTag) =>
-							setNewEvent({ ...newEvent, tag: selectedTag })
+							setNewEvent({
+								...newEvent,
+								backgroundColor: JSON.parse(selectedTag).color,
+							})
 						}
+						required
 					>
 						<SelectTrigger className="w-full flex justify-between items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-300 hover:border-[#939393] focus:border-hidden">
-							<div className="w-full flex gap-x-3 items-center">
+							<div className="w-full flex gap-x-3 items-center group-required:border group-required:border-red-500">
 								<User className="w-[14px] h-[14px]" />
 								<SelectValue placeholder="Tag" />
 							</div>
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
+								<SelectLabel>Tag</SelectLabel>
 								{userData?.tags.map((tag: any) => (
-									<SelectItem key={tag._id} value={tag.title}>
+									<SelectItem
+										key={tag._id}
+										value={JSON.stringify(tag)}
+									>
 										<span className={`text-[${tag.color}]`}>
 											{tag.title}
 										</span>

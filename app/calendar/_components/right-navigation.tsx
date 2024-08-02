@@ -92,7 +92,7 @@ const RightNavigation = () => {
 					className="flex flex-wrap justify-center items-center "
 				>
 					{userData?.events
-						.filter((event: any) => event.start == "")
+						.filter((event: any) => event.start == null)
 						.map((event: any) => (
 							<div
 								className="fc-event border p-2 rounded-md bg-slate-200 m-1 text-sm"

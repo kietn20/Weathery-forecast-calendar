@@ -37,7 +37,7 @@ const CalendarPage = () => {
 	};
 
 	return (
-		<div className="flex flex-col w-[100%] h-screen">
+		<div className="flex flex-col w-[1350px]  h-screen">
 			<Navbar />
 			{/* {JSON.stringify(userData.events)} */}
 			{/* {JSON.stringify(newEvent.start)} */}
@@ -45,7 +45,7 @@ const CalendarPage = () => {
 					--------------------------------------------------------------------------------------------
 				</span> */}
 			{/* {JSON.stringify(newEvent)} */}
-			<div className="h-full pt-9 px-0">
+			<div className="h-full pt-5 px-0">
 				<FullCalendar
 					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
 					headerToolbar={{
@@ -55,7 +55,7 @@ const CalendarPage = () => {
 					}}
 					height="auto"
 					handleWindowResize={true}
-					expandRows={true}
+					expandRows={false}
 					events={userData?.events}
 					nowIndicator={true}
 					editable={true}
@@ -70,6 +70,7 @@ const CalendarPage = () => {
 					}}
 					drop={(data) => addEvent(data)}
 					eventClick={() => console.log}
+					dayMaxEventRows={4}
 				/>
 			</div>
 		</div>

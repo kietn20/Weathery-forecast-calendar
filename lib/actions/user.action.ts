@@ -128,13 +128,15 @@ export async function addEventToDB(newEventData: any) {
             return NextResponse.json({ message : "User not found"}, { status: 404});
         }
 
-        const newEvent = { title: newEventData.title, start: newEventData.start, end: newEventData.end, allDay: newEventData.allDay, repeat: newEventData.repeat, tag: newEventData.tag, description: newEventData.description };
+        const newEvent = { title: newEventData.title, start: newEventData.start, end: newEventData.end, allDay: newEventData.allDay, repeat: newEventData.repeat, backgroundColor: newEventData.backgroundColor, description: newEventData.description };
+        
+        console.log(JSON.stringify(newEvent));
 
         // Use $push to add new tag into tags array
         const updatedUser = await User.findOneAndUpdate(
             { clerkId: userId },
             { $push: { events: newEvent }},
-            { new: true, runValidators: true }
+            { new: true, runValidators: false }
         );
         console.log('updatedUser from user.actions:', JSON.stringify(updatedUser))
         return JSON.parse(JSON.stringify(updatedUser));

@@ -86,5 +86,6 @@
 }
 
 .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
-	min-height: 125px; /* Adjust this value to set your desired row height */
+	/* Adjust this value to set your desired row height */
+	min-height: 125px;
 }

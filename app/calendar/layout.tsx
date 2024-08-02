@@ -16,7 +16,7 @@ const CalendarLayout = ({ children }: { children: React.ReactNode }) => {
 		<UserProvider>
 			<div className="flex">
 				<LeftNavigation />
-				<main className="flex flex-col w-[100%] h-screen">
+				<main className="flex flex-col h-screen">
 					{children}
 				</main>
 				<RightNavigation />

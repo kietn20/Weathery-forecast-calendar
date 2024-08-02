@@ -27,7 +27,7 @@ interface INewEvent {
 	end: Date | string;
 	allDay: boolean;
 	repeat: string;
-	tag: string;
+	backgroundColor: string;
 	description: string;
 }
 
@@ -50,7 +50,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		end: "",
 		allDay: true,
 		repeat: "",
-		tag: "",
+		backgroundColor: "",
 		description: "",
 	});
 
