@@ -92,6 +92,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 					width={300}
 					height={300}
 					alt="calendar-page-loading-gif"
+					unoptimized
 				/>
 				<span className="text-3xl opacity-60 blink_me italic">
 					Loading Calendar

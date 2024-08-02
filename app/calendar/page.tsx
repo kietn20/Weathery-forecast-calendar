@@ -45,7 +45,7 @@ const CalendarPage = () => {
 					--------------------------------------------------------------------------------------------
 				</span> */}
 			{/* {JSON.stringify(newEvent)} */}
-			<div className="h-full pt-5 px-0">
+			<div className="h-full pt-5 px-2">
 				<FullCalendar
 					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
 					headerToolbar={{
@@ -71,6 +71,7 @@ const CalendarPage = () => {
 					drop={(data) => addEvent(data)}
 					eventClick={() => console.log}
 					dayMaxEventRows={4}
+					eventBorderColor="#d9e3f0"
 				/>
 			</div>
 		</div>

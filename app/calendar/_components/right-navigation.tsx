@@ -29,7 +29,7 @@ const RightNavigation = () => {
 	// });
 	const { userData, setUserData } = useUserContext();
 	const [draggableEventCount, setDraggableEventCount] = useState(
-		userData.events.filter((event: any) => event.start == "").length
+		userData.events.filter((event: any) => event.start == null).length
 	);
 
 	useEffect(() => {
