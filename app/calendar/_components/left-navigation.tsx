@@ -35,7 +35,10 @@ const LeftNavigation = () => {
 			console.log("Adding tag");
 			const newUntitledTag = { title: "Untitled", color: "#d9e3f0" };
 			// setTags([...data.tags, newUntitledTag]);
-			const updatedUser = await addNewTag(userData!.clerkId, newUntitledTag);
+			const updatedUser = await addNewTag(
+				userData!.clerkId,
+				newUntitledTag
+			);
 			setUserData(updatedUser);
 		} else {
 			console.log("Reached maximum amount of Tags");
@@ -73,8 +76,10 @@ const LeftNavigation = () => {
 					))}
 				</div>
 			</div>
-			{/* <div className="w-[80%] flex flex-col bg-purple-0 justify-center text-gray-700 py-7 px-0">
-				<h1 className="text-base text-black font-semibold">Navigation</h1>
+			<div className="w-[80%] flex flex-col bg-purple-0 justify-center text-gray-700 py-7 px-0">
+				<h1 className="text-base text-black font-semibold">
+					Navigation
+				</h1>
 				<div className="flex justify-between bg-red-0 items-center py-1 opacity-60">
 					<h3 className="font-normal text-sm">Month</h3>
 					<span className="w-5 h-5 bg-gray-300 flex justify-center items-center rounded-sm opacity-70 text-xs font-bold p-1">
@@ -108,7 +113,9 @@ const LeftNavigation = () => {
 					</div>
 				</div>
 				<div className="flex justify-between items-center py-1 opacity-60 gap-x-1">
-					<h3 className="font-normal text-sm">Toggle Menu Bar Calendar</h3>
+					<h3 className="font-normal text-sm">
+						Toggle Menu Bar Calendar
+					</h3>
 					<span className="w-5 h-5 bg-gray-300 flex justify-center items-center rounded-sm opacity-70 text-lg font-bold p-1">
 						`
 					</span>
@@ -119,7 +126,7 @@ const LeftNavigation = () => {
 						.
 					</span>
 				</div>
-			</div> */}
+			</div>
 		</div>
 	);
 };

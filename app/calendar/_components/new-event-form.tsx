@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useUserContext } from "@/hooks/UserContext";
@@ -33,6 +33,7 @@ import { DropArg } from "@fullcalendar/interaction/index.js";
 
 const NewEventForm = () => {
 	const { userData, setUserData, newEvent, setNewEvent } = useUserContext();
+	const inputTitleRef = useRef<any>("");
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
@@ -49,6 +50,7 @@ const NewEventForm = () => {
 			tag: "",
 			description: "",
 		});
+		inputTitleRef.current.value = "";
 		console.log("done submit");
 	};
 
@@ -61,6 +63,7 @@ const NewEventForm = () => {
 			<span className="font-medium text-sm">New Event</span>
 			<form action="" className="mt-3 relative" onSubmit={handleSubmit}>
 				<input
+					ref={inputTitleRef}
 					type="text"
 					placeholder="Title"
 					className="text-sm bg-[#F9F9F9] focus:bg-[#efefef] font-light p-2 rounded-md border border-[#F9F9F9] hover:border-[#d5d5d5] hover:border-opacity-100 duration-150"
