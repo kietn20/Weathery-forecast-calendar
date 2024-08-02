@@ -101,7 +101,7 @@ const RightNavigation = () => {
 				/>
 			</div> */}
 
-			<div className="w-[100%] flex flex-col bg-purple-0 justify-center text-gray-700 mb-24 bg-orange-0">
+			<div className="w-[100%] flex flex-col bg-purple-0 justify-center text-gray-700 my-2">
 				<h1 className="text-base text-black font-semibold">
 					Navigation
 				</h1>
@@ -123,7 +123,7 @@ const RightNavigation = () => {
 						D
 					</span>
 				</div>
-				<h1 className="text-base text-black font-semibold pt-3">
+				<h1 className="text-base text-black font-semibold pt-6">
 					Useful Shortcuts
 				</h1>
 				<div className="flex justify-between bg-red-0 items-center py-1 opacity-60">

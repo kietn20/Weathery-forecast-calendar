@@ -37,49 +37,41 @@ const CalendarPage = () => {
 	};
 
 	return (
-		<div className="flex">
-			<LeftNavigation />
-			<div className="flex flex-col w-screen h-screen overflow-hidden">
-				<Navbar />
-				{JSON.stringify(userData.events)}
-				{/* {JSON.stringify(newEvent.start)} */}
-				<span>
+		<div className="flex flex-col w-[100%] h-screen">
+			<Navbar />
+			{/* {JSON.stringify(userData.events)} */}
+			{/* {JSON.stringify(newEvent.start)} */}
+			{/* <span>
 					--------------------------------------------------------------------------------------------
-				</span>
-				{JSON.stringify(newEvent)}
-				<div className="h-screen pt-9 px-0 overflow-hidden">
-					<FullCalendar
-						plugins={[
-							dayGridPlugin,
-							interactionPlugin,
-							timeGridPlugin,
-						]}
-						headerToolbar={{
-							left: "title",
-							center: "",
-							right: "dayGridMonth,timeGridWeek,prev,next,today",
-						}}
-						height="100%"
-						handleWindowResize={true}
-						expandRows={true}
-						events={userData?.events}
-						nowIndicator={true}
-						editable={true}
-						droppable={true}
-						selectable={true}
-						selectMirror={true}
-						dateClick={(selectedDate) => {
-							setNewEvent({
-								...newEvent,
-								start: selectedDate.date,
-							});
-						}}
-						drop={(data) => addEvent(data)}
-						eventClick={() => console.log}
-					/>
-				</div>
+				</span> */}
+			{/* {JSON.stringify(newEvent)} */}
+			<div className="h-full pt-9 px-0">
+				<FullCalendar
+					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+					headerToolbar={{
+						left: "title",
+						center: "",
+						right: "dayGridMonth,timeGridWeek,prev,next,today",
+					}}
+					height="auto"
+					handleWindowResize={true}
+					expandRows={true}
+					events={userData?.events}
+					nowIndicator={true}
+					editable={true}
+					droppable={true}
+					selectable={true}
+					selectMirror={true}
+					dateClick={(selectedDate) => {
+						setNewEvent({
+							...newEvent,
+							start: selectedDate.date,
+						});
+					}}
+					drop={(data) => addEvent(data)}
+					eventClick={() => console.log}
+				/>
 			</div>
-			<RightNavigation />
 		</div>
 	);
 };
