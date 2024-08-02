@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/navbar";
 import { Switch } from "@/components/ui/switch";
 import { CircleArrowRight, Clock, Repeat } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	Select,
 	SelectContent,
@@ -28,6 +28,9 @@ const RightNavigation = () => {
 	// 	day: "numeric",
 	// });
 	const { userData, setUserData } = useUserContext();
+	const [draggableEventCount, setDraggableEventCount] = useState(
+		userData.events.filter((event: any) => event.start == "").length
+	);
 
 	useEffect(() => {
 		let draggableEl = document.getElementById("draggable-el");
@@ -73,13 +76,16 @@ const RightNavigation = () => {
 						</div>
 					</div>
 				</div>
-				<NewEventForm />
+				<NewEventForm
+					draggableEventCount={draggableEventCount}
+					setDraggableEventCount={setDraggableEventCount}
+				/>
 				<div className="border-t-[1px] w-[100%]" />
 			</div>
 
 			<div className="w-full h-96 flex flex-col justify-start items-center p-2 border-2 border-dashed rounded-md">
-				<span className="text-sm text-gray-400 pb-2">
-					Draggable Events
+				<span className="text-sm text-gray-400 pb-4">
+					Draggable Events ({draggableEventCount})
 				</span>
 				<div
 					id="draggable-el"
@@ -89,7 +95,7 @@ const RightNavigation = () => {
 						.filter((event: any) => event.start == "")
 						.map((event: any) => (
 							<div
-								className="fc-event border p-2 rounded-md bg-slate-200 m-1"
+								className="fc-event border p-2 rounded-md bg-slate-200 m-1 text-sm"
 								title={event.title}
 								key={event._id}
 							>

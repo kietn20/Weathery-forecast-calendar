@@ -30,28 +30,45 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useUserContext } from "@/hooks/UserContext";
 import { DropArg } from "@fullcalendar/interaction/index.js";
+import { toast } from "@/components/ui/use-toast";
 
-const NewEventForm = () => {
+const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 	const { userData, setUserData, newEvent, setNewEvent } = useUserContext();
 	const inputTitleRef = useRef<any>("");
+	const startDateRef = useRef<any>();
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
-		setUserData((prevUserData: any) => ({
-			...prevUserData,
-			events: [...prevUserData?.events, newEvent],
-		}));
-		setNewEvent({
-			title: "",
-			start: "",
-			end: "",
-			allDay: true,
-			repeat: "",
-			tag: "",
-			description: "",
-		});
-		inputTitleRef.current.value = "";
-		console.log("done submit");
+
+		if (draggableEventCount >= 12) {
+			console.log(
+				"Reached the limit of creating events without starting dates."
+			);
+			toast({
+				variant: "destructive",
+				title: "Uh oh! Reached maximum amount of Tags (5)",
+				description: "Please delete a tag to include a new tag.",
+			});
+		} else {
+			if (newEvent.start == "") {
+				setDraggableEventCount(draggableEventCount + 1);
+			}
+			setUserData((prevUserData: any) => ({
+				...prevUserData,
+				events: [...prevUserData?.events, newEvent],
+			}));
+			setNewEvent({
+				title: "",
+				start: "",
+				end: "",
+				allDay: true,
+				repeat: "",
+				tag: "",
+				description: "",
+			});
+			inputTitleRef.current.value = "";
+			console.log("done submit");
+		}
 	};
 
 	const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
