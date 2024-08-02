@@ -46,7 +46,7 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 			);
 			toast({
 				variant: "destructive",
-				title: "Uh oh! Reached maximum amount of Tags (5)",
+				title: "Uh oh! Reached maximum amount of Draggable Events (12)",
 				description: "Please delete a tag to include a new tag.",
 			});
 		} else {
