@@ -32,20 +32,30 @@ import { useUserContext } from "@/hooks/UserContext";
 import { DropArg } from "@fullcalendar/interaction/index.js";
 
 const NewEventForm = () => {
-	const { userData, setUserData } = useUserContext();
-	const [startDate, setStartDate] = useState<Date>();
-	const [endDate, setEndDate] = useState<Date>();
-	const [allDay, setAllDay] = useState(true);
-	const [repeatOption, setRepeatOption] = useState("");
-	const [description, setDescription] = useState("");
-	const [owner, setOwner] = useState(userData?.tags[0]["title"]);
+	const { userData, setUserData, newEvent, setNewEvent } = useUserContext();
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
-		console.log("handling submit");
+		setUserData((prevUserData: any) => ({
+			...prevUserData,
+			events: [...prevUserData?.events, newEvent],
+		}));
+		setNewEvent({
+			title: "",
+			start: "",
+			end: "",
+			allDay: true,
+			repeat: "",
+			tag: "",
+			description: "",
+		});
+		console.log("done submit");
 	};
 
-	
+	const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setNewEvent({ ...newEvent, title: event.target.value });
+	};
+
 	return (
 		<div className="flex flex-col bg-lime-0 w-full mt-5 justify-start items-start">
 			<span className="font-medium text-sm">New Event</span>
@@ -54,6 +64,8 @@ const NewEventForm = () => {
 					type="text"
 					placeholder="Title"
 					className="text-sm bg-[#F9F9F9] focus:bg-[#efefef] font-light p-2 rounded-md border border-[#F9F9F9] hover:border-[#d5d5d5] hover:border-opacity-100 duration-150"
+					onChange={(event) => handleTitleChange(event)}
+					required
 				/>
 				<div className="border-t-[1px] w-[100%] my-2" />
 				<div className="flex justify-start items-center gap-x-2 mt-3">
@@ -62,14 +74,22 @@ const NewEventForm = () => {
 							<Button
 								variant={"outline"}
 								className={cn(
-									"justify-start text-left text-xs bg-[#F9F9F9] focus:bg-[#efefef] font-light p-1 rounded-md border border-[#F9F9F9] hover:border-[#efefef] hover:border-opacity-100 w-28 p-2 hover:text-gray-500 -ml-2 group",
-									!startDate && "text-muted-foreground"
+									"justify-start text-left text-xs bg-[#F9F9F9] focus:bg-[#efefef] font-light p-1 rounded-md border border-[#F9F9F9] hover:border-[#efefef] hover:border-opacity-100 w-28 hover:text-gray-500 -ml-2 group",
+									!newEvent.start && "text-muted-foreground"
 								)}
 							>
 								<CalendarIcon className="mr-2 h-4 w-4 text-gray-400 group-hover:text-gray-500 duration-100" />
-								{startDate ? (
+								{newEvent.start ? (
 									<span className="ml-2 text-gray-400 group-hover:text-gray-500 duration-100">
-										{format(startDate, "E MMM d")}
+										{format(newEvent.start, "E MMM d")}
+										{/* {JSON.stringify(newEvent.start)} */}
+										{/* {newEvent.start
+											.toLocaleDateString("en-US", {
+												weekday: "short", // Day name (e.g., Monday)
+												month: "short", // Abbreviated month (e.g., Jan)
+												day: "numeric", // Day number (e.g., 1)
+											})
+											.replace(/,/g, "")} */}
 									</span>
 								) : (
 									<span className="ml-2 text-gray-400 group-hover:text-gray-500 duration-100">
@@ -81,8 +101,13 @@ const NewEventForm = () => {
 						<PopoverContent className="w-auto p-0">
 							<Calendar
 								mode="single"
-								selected={startDate}
-								onSelect={setStartDate}
+								selected={newEvent.start}
+								onSelect={(selectedStartDate) =>
+									setNewEvent({
+										...newEvent,
+										start: selectedStartDate,
+									})
+								}
 								initialFocus
 							/>
 						</PopoverContent>
@@ -92,19 +117,19 @@ const NewEventForm = () => {
 							<Button
 								variant={"outline"}
 								className={cn(
-									"justify-center text-left text-xs bg-[#F9F9F9] focus:bg-[#efefef] font-light p-1 rounded-md border border-[#F9F9F9] hover:border-[#efefef] hover:border-opacity-100 w-24 p-2 hover:text-gray-500 group",
-									!startDate && "text-muted-foreground"
+									"justify-center text-left text-xs bg-[#F9F9F9] focus:bg-[#efefef] font-light p-1 rounded-md border border-[#F9F9F9] hover:border-[#efefef] hover:border-opacity-100 w-24 hover:text-gray-500 group",
+									!newEvent.end && "text-muted-foreground"
 								)}
-								disabled={allDay}
+								disabled={newEvent.allDay}
 							>
-								{endDate ? (
+								{newEvent.end ? (
 									<span className=" text-gray-400 group-hover:text-gray-500 duration-100">
-										{format(endDate, "E MMM d")}
+										{format(newEvent.end, "E MMM d")}
 									</span>
 								) : (
 									<span
 										className={`text-gray-400 group-hover:text-gray-500 duration-100 ${
-											allDay && `line-through`
+											newEvent.allDay && `line-through`
 										}`}
 									>
 										End Date
@@ -115,8 +140,13 @@ const NewEventForm = () => {
 						<PopoverContent className="w-auto p-0">
 							<Calendar
 								mode="single"
-								selected={endDate}
-								onSelect={setEndDate}
+								selected={newEvent.end}
+								onSelect={(selectedEndDate) =>
+									setNewEvent({
+										...newEvent,
+										end: selectedEndDate,
+									})
+								}
 								initialFocus
 							/>
 						</PopoverContent>
@@ -126,8 +156,14 @@ const NewEventForm = () => {
 					<div className="flex items-center ">
 						<Switch
 							className="scale-50"
-							checked={allDay}
-							onCheckedChange={() => setAllDay(!allDay)}
+							checked={newEvent.allDay}
+							onCheckedChange={() => {
+								setNewEvent({
+									...newEvent,
+									allDay: !newEvent.allDay,
+									end: "",
+								});
+							}}
 						/>
 					</div>
 					<span className="text-xs font-light text-gray-400 group-hover:text-gray-500 duration-100">
@@ -135,7 +171,14 @@ const NewEventForm = () => {
 					</span>
 				</div>
 				<div className="flex items-center mt-4 justify-start group">
-					<Select onValueChange={setRepeatOption}>
+					<Select
+						onValueChange={(selectedRepeatOption) =>
+							setNewEvent({
+								...newEvent,
+								repeat: selectedRepeatOption,
+							})
+						}
+					>
 						<SelectTrigger className="w-full flex items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-300 hover:border-[#939393] focus:border-hidden">
 							<div className="w-full flex gap-x-3 items-center">
 								<Repeat className="w-[14px] h-[14px]" />
@@ -147,12 +190,7 @@ const NewEventForm = () => {
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
-								<SelectItem value="everyday">
-									Everyday
-								</SelectItem>
-								<SelectItem value="every-weekend">
-									Every weekend day
-								</SelectItem>
+								<SelectItem value="everyday">Daily</SelectItem>
 								<SelectItem value="every-week">
 									Every week
 								</SelectItem>
@@ -170,11 +208,16 @@ const NewEventForm = () => {
 					</Select>
 				</div>
 				<div className="flex items-center my-4 justify-start group">
-					<Select value={owner} onValueChange={setOwner}>
+					<Select
+						defaultValue={userData.tags[0].title}
+						onValueChange={(selectedTag) =>
+							setNewEvent({ ...newEvent, tag: selectedTag })
+						}
+					>
 						<SelectTrigger className="w-full flex justify-between items-center text-xs bg-[#F9F9F9] focus:bg-[#efefef] text-gray-400 group-hover:text-gray-500 duration-300 hover:border-[#939393] focus:border-hidden">
 							<div className="w-full flex gap-x-3 items-center">
 								<User className="w-[14px] h-[14px]" />
-								<SelectValue placeholder="Owner" className="" />
+								<SelectValue placeholder="Tag" />
 							</div>
 						</SelectTrigger>
 						<SelectContent>
@@ -194,15 +237,18 @@ const NewEventForm = () => {
 				<div className="text-xs border-[#9ca3af] focus:bg-[#efefef] font-light group">
 					<Textarea
 						placeholder="description"
-						className="bg-[#F9F9F9] hover:border-[#939393] resize-none focus:border-hidden truncate text-gray-400 group-hover:text-gray-900 duration-300"
+						value={newEvent.description}
+						className="bg-[#F9F9F9] hover:border-[#939393] resize-none focus:border-hidden truncate text-gray-400 group-hover:text-gray-900 duration-200"
 						spellCheck={false}
-						onChange={(event) => setDescription(event.target.value)}
+						onChange={(event) =>
+							setNewEvent({
+								...newEvent,
+								description: event.target.value,
+							})
+						}
 					/>
 				</div>
-				<button
-					className="relative inline-block text-sm group my-5"
-					onClick={() => console.log("submitting")}
-				>
+				<button className="relative inline-block text-sm group my-5">
 					<span className="relative z-10 block px-16 py-1 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
 						<span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
 						<span className="absolute left-0 w-[110%] h-48 -ml-2 transition-all duration-500 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease rounded-3xl"></span>

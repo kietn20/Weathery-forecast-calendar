@@ -132,7 +132,7 @@ export async function addEventToDB(newEventData: any) {
 
         // Use $push to add new tag into tags array
         const updatedUser = await User.findOneAndUpdate(
-            { userId },
+            { clerkId: userId },
             { $push: { events: newEvent }},
             { new: true, runValidators: true }
         );

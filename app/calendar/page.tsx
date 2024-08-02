@@ -16,18 +16,13 @@ import { addEventToDB } from "@/lib/actions/user.action";
 
 const CalendarPage = () => {
 	const { user } = useUser();
-	const { userData, setUserData } = useUserContext();
+	const { userData, setUserData, newEvent, setNewEvent } = useUserContext();
 
 	// useEffect(() => {
 	// 	console.log(user);
 	// 	console.log(user?.publicMetadata.userId)
 	// }, []);
 	const [allEvents, setAllEvents] = useState<any[]>([]);
-	const [newEvent, setNewEvent] = useState({
-		title: "",
-		start: "",
-		allDay: true,
-	});
 
 	const addEvent = async (data: DropArg) => {
 		const event = {
@@ -46,8 +41,13 @@ const CalendarPage = () => {
 			<LeftNavigation />
 			<div className="flex flex-col w-screen h-screen overflow-hidden">
 				<Navbar />
-				{JSON.stringify(userData)}
-				<div className="h-screen pt-9 px-2">
+				{JSON.stringify(userData.events)}
+				{/* {JSON.stringify(newEvent.start)} */}
+				<span>
+					--------------------------------------------------------------------------------------------
+				</span>
+				{JSON.stringify(newEvent)}
+				<div className="h-screen pt-9 px-0 overflow-hidden">
 					<FullCalendar
 						plugins={[
 							dayGridPlugin,
@@ -59,16 +59,21 @@ const CalendarPage = () => {
 							center: "",
 							right: "dayGridMonth,timeGridWeek,prev,next,today",
 						}}
-						height="90%"
+						height="100%"
 						handleWindowResize={true}
 						expandRows={true}
 						events={userData?.events}
 						nowIndicator={true}
 						editable={true}
 						droppable={true}
-						// selectable={true}
+						selectable={true}
 						selectMirror={true}
-						// dateClick={() =>}
+						dateClick={(selectedDate) => {
+							setNewEvent({
+								...newEvent,
+								start: selectedDate.date,
+							});
+						}}
 						drop={(data) => addEvent(data)}
 						eventClick={() => console.log}
 					/>

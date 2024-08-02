@@ -21,9 +21,21 @@ interface UserData {
 	tags: [];
 }
 
+interface INewEvent {
+	title: string;
+	start: Date | string;
+	end: Date | string;
+	allDay: boolean;
+	repeat: string;
+	tag: string;
+	description: string;
+}
+
 interface UserContextType {
 	userData: UserData | any;
-	setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
+	setUserData: React.Dispatch<React.SetStateAction<UserData | any>>;
+	newEvent: INewEvent | any;
+	setNewEvent: React.Dispatch<React.SetStateAction<INewEvent | any>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -32,6 +44,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 	const { isSignedIn, isLoaded, user } = useUser();
 	const [userData, setUserData] = useState<UserData | any>(null);
 	const [loading, setLoading] = useState(true);
+	const [newEvent, setNewEvent] = useState({
+		title: "",
+		start: "",
+		end: "",
+		allDay: true,
+		repeat: "",
+		tag: "",
+		description: "",
+	});
 
 	useEffect(() => {
 		if (!isLoaded) return;
@@ -80,7 +101,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 	}
 
 	return (
-		<UserContext.Provider value={{ userData, setUserData }}>
+		<UserContext.Provider
+			value={{ userData, setUserData, newEvent, setNewEvent }}
+		>
 			{children}
 		</UserContext.Provider>
 	);
