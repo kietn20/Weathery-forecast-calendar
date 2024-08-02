@@ -36,10 +36,11 @@ interface UserContextType {
 	setUserData: React.Dispatch<React.SetStateAction<UserData | any>>;
 	newEvent: INewEvent | any;
 	setNewEvent: React.Dispatch<React.SetStateAction<INewEvent | any>>;
+	forecast: any;
+	setForecast: any;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
-
 export const UserProvider = ({ children }: { children: ReactNode }) => {
 	const { isSignedIn, isLoaded, user } = useUser();
 	const [userData, setUserData] = useState<UserData | any>(null);
@@ -53,6 +54,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		backgroundColor: "",
 		description: "",
 	});
+	
+	const OpenweatherAPIKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+	const [forecast, setForecast] = useState([]);
 
 	useEffect(() => {
 		if (!isLoaded) return;
@@ -81,7 +85,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 			}
 		};
 
+		const fetchWeatherFromApi = async () => {
+			const response = await fetch(
+				`https://api.openweathermap.org/data/2.5/forecast/daily?zip=${"92843"},${"US"}&cnt=30&units=metric&appid=${OpenweatherAPIKey}`
+			);
+			const data = await response.json();
+			setForecast(data.list); // `list` contains daily forecast data
+		};
+
 		fetchUserFromApi();
+		fetchWeatherFromApi();
+		console.log(JSON.stringify(forecast));
 	}, [isLoaded, isSignedIn]);
 
 	if (loading) {
@@ -103,7 +117,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<UserContext.Provider
-			value={{ userData, setUserData, newEvent, setNewEvent }}
+			value={{
+				userData,
+				setUserData,
+				newEvent,
+				setNewEvent,
+				forecast,
+				setForecast,
+			}}
 		>
 			{children}
 		</UserContext.Provider>
