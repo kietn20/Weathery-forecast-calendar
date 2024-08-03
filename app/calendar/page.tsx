@@ -112,7 +112,7 @@ const CalendarPage = () => {
 	useEffect(() => {
 		const fetchWeatherFromApi = async () => {
 			try {
-				// setLoading(true);
+				setLoading(true);
 				const response = await fetch(
 					`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${
 						userData.city
@@ -149,24 +149,74 @@ const CalendarPage = () => {
 				let backgroundImage = "";
 
 				switch (weatherMain) {
+					// case "Rain":
+					// 	backgroundImage = "url('/rainning.png')";
+					// 	break;
+					// case "Clear":
+					// 	backgroundImage = "url('/sunny.png')";
+					// 	break;
+					// case "Clouds":
+					// 	backgroundImage = "url('/cloudy.png')";
+					// 	break;
+					// default:
+					// 	backgroundImage = "url('/sunny.png')";
+
 					case "Rain":
-						backgroundImage = "url('/rainning.png')";
+						backgroundImage = "/rainning.png";
 						break;
 					case "Clear":
-						backgroundImage = "url('/sunny.png')";
+						backgroundImage = "/sunny.png";
 						break;
 					case "Clouds":
-						backgroundImage = "url('/cloudy.png')";
+						backgroundImage = "/cloudy.png";
 						break;
 					default:
-						backgroundImage = "url('/sunny.png')";
+						backgroundImage = "/sunny.png";
 				}
 
+				info.el.style.position = "relative";
+				const weatherDescription = forecastData.weather[0].description;
+				const tempDay = forecastData.temp.day;
+
+				// Create content elements
+				const dayInfoContainer = document.createElement("div");
+				dayInfoContainer.style.fontSize = "11px";
+				dayInfoContainer.style.display = "flex";
+				dayInfoContainer.style.gap = "5px";
+				dayInfoContainer.style.position = "absolute";
+				dayInfoContainer.style.top = "5px";
+				dayInfoContainer.style.left = "5px";
+				// const weatherMainElement = document.createElement("div");
+				// weatherMainElement.textContent = weatherMain;
+				// weatherMainElement.style.fontWeight = "bold";
+				const weatherMainElement = document.createElement("img");
+				weatherMainElement.src = backgroundImage;
+				weatherMainElement.style.width = "28px";
+				weatherMainElement.style.height = "28px";
+
+				const weatherDescriptionElement =
+					document.createElement("span");
+				weatherDescriptionElement.textContent = weatherDescription;
+				weatherDescriptionElement.style.fontStyle = "italic";
+				weatherDescriptionElement.style.marginTop = "5px";
+
+				const tempDayElement = document.createElement("div");
+				tempDayElement.textContent = `${tempDay}°F`;
+				tempDayElement.style.marginTop = "5px";
+
+				// Append the elements to the cell
+				dayInfoContainer.append(
+					weatherMainElement,
+					weatherDescriptionElement,
+					tempDayElement
+				);
+				info.el.prepend(dayInfoContainer);
+
 				// Apply the background image to the cell
-				info.el.style.backgroundImage = backgroundImage;
-				info.el.style.backgroundSize = "contain"; // Ensure the image covers the cell
-				info.el.style.backgroundPosition = "center";
-				info.el.style.backgroundRepeat = "no-repeat";
+				// info.el.style.backgroundImage = backgroundImage;
+				// info.el.style.backgroundSize = "contain"; // Ensure the image covers the cell
+				// info.el.style.backgroundPosition = "center";
+				// info.el.style.backgroundRepeat = "no-repeat";
 			}
 		} else {
 			console.log("No forecast yet. Enter City Name.");
@@ -195,37 +245,45 @@ const CalendarPage = () => {
 			</span> */}
 			{/* Forecast: {JSON.stringify(forecast)} */}
 			<div className="h-full pt-5 px-2">
-				<FullCalendar
-					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-					headerToolbar={{
-						left: "title",
-						center: "",
-						right: "dayGridMonth,timeGridWeek,prev,next,today",
-					}}
-					height="auto"
-					handleWindowResize={true}
-					expandRows={false}
-					events={userData?.events.filter(
-						(event: any) => !tagsHidden.includes(event.tag_id)
-					)}
-					nowIndicator={true}
-					editable={true}
-					droppable={true}
-					selectable={true}
-					selectMirror={true}
-					dateClick={(selectedDate) => {
-						setNewEvent({
-							...newEvent,
-							start: selectedDate.date,
-						});
-					}}
-					drop={(data) => addEvent(data)}
-					eventClick={handleEventClick}
-					dayMaxEventRows={4}
-					eventBorderColor="#555555"
-					// dayCellDidMount={handleDayCellDidMount}
-					dayCellDidMount={handleDayCellDidMount}
-				/>
+				{loading == false ? (
+					<FullCalendar
+						plugins={[
+							dayGridPlugin,
+							interactionPlugin,
+							timeGridPlugin,
+						]}
+						headerToolbar={{
+							left: "title",
+							center: "",
+							right: "dayGridMonth,timeGridWeek,prev,next,today",
+						}}
+						height="auto"
+						handleWindowResize={true}
+						expandRows={false}
+						events={userData?.events.filter(
+							(event: any) => !tagsHidden.includes(event.tag_id)
+						)}
+						nowIndicator={true}
+						editable={true}
+						droppable={true}
+						selectable={true}
+						selectMirror={true}
+						dateClick={(selectedDate) => {
+							setNewEvent({
+								...newEvent,
+								start: selectedDate.date,
+							});
+						}}
+						drop={(data) => addEvent(data)}
+						eventClick={handleEventClick}
+						dayMaxEventRows={4}
+						eventBorderColor="#555555"
+						// dayCellDidMount={handleDayCellDidMount}
+						dayCellDidMount={handleDayCellDidMount}
+					/>
+				) : (
+					""
+				)}
 			</div>
 			{selectedEvent && (
 				<Drawer
