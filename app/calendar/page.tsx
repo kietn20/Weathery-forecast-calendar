@@ -353,13 +353,6 @@ const CalendarPage = () => {
 									: "No Description"}
 							</DialogDescription>
 						</DialogHeader>
-						{/* <div className="flex items-center space-x-2">
-							<div className="grid flex-1 gap-2">
-								<label htmlFor="link" className="sr-only">
-									Link
-								</label>
-							</div>
-						</div> */}
 						<DialogFooter className="sm:justify-start">
 							<Button
 								type="button"
