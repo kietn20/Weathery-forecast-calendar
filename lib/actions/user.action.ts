@@ -128,6 +128,8 @@ export async function addEventToDB(newEventData: any) {
             return NextResponse.json({ message : "User not found"}, { status: 404});
         }
 
+        console.log(newEventData);
+
         const newEvent = { title: newEventData.title, start: newEventData.start, end: newEventData.end, allDay: newEventData.allDay, repeat: newEventData.repeat, backgroundColor: newEventData.backgroundColor, tag_id: newEventData.tag_id, description: newEventData.description };
         
         console.log(JSON.stringify(newEvent));

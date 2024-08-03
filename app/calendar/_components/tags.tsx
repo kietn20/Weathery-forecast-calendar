@@ -30,7 +30,7 @@ const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
 	const [pickingColor, setPickingColor] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 	const [hideTag, setHideTag] = useState(false);
-	const { setTagsHidden } = useUserContext();
+	const { tagsHidden, setTagsHidden } = useUserContext();
 
 	const colorStyle = {
 		backgroundColor: color,
@@ -109,15 +109,35 @@ const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
 			<div className="flex">
 				{isVisible && (
 					<div className="flex items-center gap-x-1">
-						<button
-							className="rounded-sm hover:bg-slate-200 ease-in transition duration-100"
-							onClick={() => {
-								setHideTag(!hideTag);
-								setTagsHidden(tagAttributes._id);
-							}}
-						>
-							<Eye />
-						</button>
+						{!hideTag ? (
+							<button
+								className="rounded-sm hover:bg-slate-200 ease-in transition duration-100"
+								onClick={() => {
+									setTagsHidden([
+										...tagsHidden,
+										tagAttributes._id,
+									]);
+									setHideTag(!hideTag);
+								}}
+							>
+								<Eye />
+							</button>
+						) : (
+							<button
+								className="rounded-sm hover:bg-slate-200 ease-in transition duration-100"
+								onClick={() => {
+									setTagsHidden((prevTagsHidden: any) =>
+										prevTagsHidden.filter(
+											(item: any) =>
+												item !== tagAttributes._id
+										)
+									);
+									setHideTag(!hideTag);
+								}}
+							>
+								<EyeOff />
+							</button>
+						)}
 						<button
 							className="rounded-sm hover:bg-slate-200 ease-in transition duration-100"
 							onClick={handleDelete}

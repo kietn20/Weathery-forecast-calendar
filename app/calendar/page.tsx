@@ -118,9 +118,15 @@ const CalendarPage = () => {
 	return (
 		<div className="flex flex-col w-[1350px]  h-screen">
 			<Navbar />
-			{JSON.stringify(userData)}
+			{JSON.stringify(userData.events)}
 			{/* {JSON.stringify(newEvent.start)} */}
-			{/* {JSON.stringify(newEvent)} */}
+			<span>
+				--------------------------------------------------------------------------------------------
+			</span>
+			{JSON.stringify(newEvent)}
+			<span>
+				--------------------------------------------------------------------------------------------
+			</span>
 			{JSON.stringify(tagsHidden)}
 			<span>
 				--------------------------------------------------------------------------------------------
@@ -137,7 +143,9 @@ const CalendarPage = () => {
 					height="auto"
 					handleWindowResize={true}
 					expandRows={false}
-					events={userData?.events}
+					events={userData?.events.filter((event: any) =>
+						!tagsHidden.includes(event.tag_id)
+					)}
 					nowIndicator={true}
 					editable={true}
 					droppable={true}
