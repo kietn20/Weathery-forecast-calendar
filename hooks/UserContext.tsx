@@ -36,6 +36,8 @@ interface UserContextType {
 	setUserData: React.Dispatch<React.SetStateAction<UserData | any>>;
 	newEvent: INewEvent | any;
 	setNewEvent: React.Dispatch<React.SetStateAction<INewEvent | any>>;
+	tagsHidden: any;
+	setTagsHidden: any;
 	forecast: any;
 	setForecast: any;
 }
@@ -52,9 +54,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		allDay: true,
 		repeat: "",
 		backgroundColor: "",
+		tag_id: "",
 		description: "",
 	});
-	
+	const [tagsHidden, setTagsHidden] = useState([]);
 	const OpenweatherAPIKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 	const [forecast, setForecast] = useState([]);
 
@@ -124,6 +127,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 				setNewEvent,
 				forecast,
 				setForecast,
+				tagsHidden,
+				setTagsHidden,
 			}}
 		>
 			{children}

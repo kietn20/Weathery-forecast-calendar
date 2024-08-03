@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ObjectId } from "mongoose";
 import { deleteTag, updateTag } from "@/lib/actions/user.action";
+import { useUserContext } from "@/hooks/UserContext";
 
 interface TagProps {
 	tagAttributes: {
@@ -28,6 +29,8 @@ const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
 	const [color, setColor] = useState<string>(tagAttributes.color);
 	const [pickingColor, setPickingColor] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
+	const [hideTag, setHideTag] = useState(false);
+	const { setTagsHidden } = useUserContext();
 
 	const colorStyle = {
 		backgroundColor: color,
@@ -106,9 +109,15 @@ const Tag: React.FC<TagProps> = ({ tagAttributes, setUserData }) => {
 			<div className="flex">
 				{isVisible && (
 					<div className="flex items-center gap-x-1">
-						<div className="rounded-sm hover:bg-slate-200 ease-in transition duration-100">
+						<button
+							className="rounded-sm hover:bg-slate-200 ease-in transition duration-100"
+							onClick={() => {
+								setHideTag(!hideTag);
+								setTagsHidden(tagAttributes._id);
+							}}
+						>
 							<Eye />
-						</div>
+						</button>
 						<button
 							className="rounded-sm hover:bg-slate-200 ease-in transition duration-100"
 							onClick={handleDelete}

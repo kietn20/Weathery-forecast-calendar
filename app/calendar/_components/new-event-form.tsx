@@ -76,6 +76,7 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 				allDay: true,
 				repeat: "",
 				backgroundColor: "",
+				tag_id: "",
 				description: "",
 			});
 
@@ -247,6 +248,7 @@ const NewEventForm = ({ draggableEventCount, setDraggableEventCount }: any) => {
 							setNewEvent({
 								...newEvent,
 								backgroundColor: JSON.parse(selectedTag).color,
+								tag_id: JSON.parse(selectedTag)._id,
 							})
 						}
 						required

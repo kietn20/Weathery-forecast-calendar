@@ -26,6 +26,7 @@ const eventSchema: Schema = new Schema({
     allDay: { type: Boolean, required: true},
     repeat: {type: String, require: false},
     backgroundColor: { type: String, require: true },
+    tag_id: { type: String, require: true},
     description: { type: String, require: false }
 
     // url: { type: String, required: true  },

@@ -37,6 +37,7 @@ const CalendarPage = () => {
 		setNewEvent,
 		forecast,
 		setForecast,
+		tagsHidden,
 	} = useUserContext();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [selectedEvent, setSetselectedEvent] = useState<any>(null);
@@ -117,12 +118,13 @@ const CalendarPage = () => {
 	return (
 		<div className="flex flex-col w-[1350px]  h-screen">
 			<Navbar />
-			{/* {JSON.stringify(userData.events)} */}
+			{JSON.stringify(userData)}
 			{/* {JSON.stringify(newEvent.start)} */}
-			{/* <span>
-					--------------------------------------------------------------------------------------------
-				</span> */}
 			{/* {JSON.stringify(newEvent)} */}
+			{JSON.stringify(tagsHidden)}
+			<span>
+				--------------------------------------------------------------------------------------------
+			</span>
 			{JSON.stringify(forecast)}
 			<div className="h-full pt-5 px-2">
 				<FullCalendar
