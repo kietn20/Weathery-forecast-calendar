@@ -90,7 +90,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 		const fetchWeatherFromApi = async () => {
 			const response = await fetch(
-				`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${"Garden Grove"},${"US"}&appid=${OpenweatherAPIKey}`
+				`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${city},${"US"}&appid=${OpenweatherAPIKey}`
 			);
 			const data = await response.json();
 			setForecast(data.list); // `list` contains daily forecast data
