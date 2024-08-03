@@ -22,7 +22,7 @@ const eventSchema: Schema = new Schema({
     // id: { type: String, required: true},
     title: { type: String, required: true },
     start: { type: Date || '', required: true },
-    end: { type: Date, required: true },
+    end: { type: Date || '', required: false },
     allDay: { type: Boolean, required: true},
     repeat: {type: String, require: false},
     backgroundColor: { type: String, require: true },

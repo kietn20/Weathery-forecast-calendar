@@ -37,7 +37,7 @@ export async function addNewTag(clerkId: string, newTag: { title: string, color:
         const updatedUser = await User.findOneAndUpdate(
             { clerkId },
             { $push: { tags: tagWithId }},
-            { new: true, runValidators: true }
+            { new: true, runValidators: false }
         );
 
         return JSON.parse(JSON.stringify(updatedUser));
