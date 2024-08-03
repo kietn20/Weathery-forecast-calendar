@@ -19,7 +19,7 @@ export const Navbar = () => {
 	const { isSignedIn, isLoaded } = useUser();
 	const scrolled = useScrollTop();
 	const pathname = usePathname();
-	const { setUserData, city, setCity } = useUserContext();
+	const { userData, setUserData } = useUserContext();
 
 	const debounce = (func: (...args: any[]) => void, wait: number) => {
 		let timeout: NodeJS.Timeout;
@@ -31,8 +31,8 @@ export const Navbar = () => {
 
 	const handleCityChange = debounce(async (event: any) => {
 		console.log(event.target.value);
-		setCity(event.target.value);
-		const updatedUser = await updateCity(city);
+		// setCity(event.target.value);
+		const updatedUser = await updateCity(event.target.value);
 		setUserData(updatedUser);
 	}, 1000);
 
@@ -81,7 +81,11 @@ export const Navbar = () => {
 						<MapPin />
 						<Input
 							type="text"
-							placeholder={city ? city : "Enter US City Name"}
+							placeholder={
+								userData.city
+									? userData.city
+									: "Enter US City Name"
+							}
 							className="border-0"
 							// value={city}
 							onChange={handleCityChange}

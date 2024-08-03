@@ -40,8 +40,10 @@ interface UserContextType {
 	setTagsHidden: any;
 	forecast: any;
 	setForecast: any;
-	city: any;
-	setCity: any;
+	loading: any;
+	setLoading: React.Dispatch<React.SetStateAction<any>>;
+	// city: string | any;
+	// setCity: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -60,9 +62,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		description: "",
 	});
 	const [tagsHidden, setTagsHidden] = useState([]);
-	const OpenweatherAPIKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 	const [forecast, setForecast] = useState([]);
-	const [city, setCity] = useState("");
+	// const [city, setCity] = useState(userData.city);
 
 	useEffect(() => {
 		if (!isLoaded) return;
@@ -91,19 +92,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 			}
 		};
 
-		const fetchWeatherFromApi = async () => {
-			const response = await fetch(
-				`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${city},${"US"}&units=imperial&appid=${OpenweatherAPIKey}`
-			);
-			const data = await response.json();
-			setForecast(data.list); // `list` contains daily forecast data
-		};
+		// const fetchWeatherFromApi = async () => {
+		// 	const response = await fetch(
+		// 		`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${
+		// 			userData.city
+		// 		},${"US"}&units=imperial&appid=${OpenweatherAPIKey}`
+		// 	);
+		// 	const data = await response.json();
+		// 	setForecast(data.list); // `list` contains daily forecast data
+		// };
 
 		fetchUserFromApi();
-		if (city) {
-			fetchWeatherFromApi();
-		}
-	}, [isLoaded, isSignedIn, city]);
+		// fetchWeatherFromApi();
+	}, [isLoaded, isSignedIn]);
 
 	if (loading) {
 		return (
@@ -133,8 +134,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 				setForecast,
 				tagsHidden,
 				setTagsHidden,
-				city,
-				setCity,
+				loading,
+				setLoading,
 			}}
 		>
 			{children}

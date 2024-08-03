@@ -29,6 +29,7 @@ import { DayCellContentArg, EventClickArg } from "@fullcalendar/core/index.js";
 import { Navbar } from "./_components/navbar";
 
 const CalendarPage = () => {
+	const OpenweatherAPIKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 	const { user } = useUser();
 	const {
 		userData,
@@ -38,6 +39,8 @@ const CalendarPage = () => {
 		forecast,
 		setForecast,
 		tagsHidden,
+		// loading,
+		// setLoading,
 	} = useUserContext();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [selectedEvent, setSetselectedEvent] = useState<any>(null);
@@ -87,6 +90,7 @@ const CalendarPage = () => {
 	// 	console.log(user?.publicMetadata.userId)
 	// }, []);
 	const [allEvents, setAllEvents] = useState<any[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	const addEvent = async (data: DropArg) => {
 		const event = {
@@ -105,33 +109,91 @@ const CalendarPage = () => {
 		setIsDrawerOpen(true);
 	};
 
-	const handleDayCellDidMount = (arg: DayCellContentArg) => {
-		const dayElement = arg.el;
-		const date = arg.date;
+	useEffect(() => {
+		const fetchWeatherFromApi = async () => {
+			try {
+				// setLoading(true);
+				const response = await fetch(
+					`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${
+						userData.city
+					},${"US"}&units=imperial&appid=${OpenweatherAPIKey}`
+				);
+				const data = await response.json();
+				setForecast(data.list); // `list` contains daily forecast data
+				setLoading(false);
+			} catch (error) {
+				setLoading(false);
+			}
+		};
+		if (userData.city) {
+			fetchWeatherFromApi();
+		}
+	}, [userData.city]);
 
-		dayElement.style.backgroundImage = "url(/cloudy.png)";
+	const handleDayCellDidMount = (info: any) => {
+		if (forecast.length > 0) {
+			// Get the date of the current cell
+			const cellDate = info.date;
 
-		dayElement.style.backgroundSize = "contain";
-		dayElement.style.backgroundRepeat = "no-repeat";
+			// Find the corresponding forecast data for this date
+			const forecastData = forecast.find(
+				(f: any) =>
+					new Date(f.dt * 1000).toDateString() ===
+					cellDate.toDateString()
+			);
+
+			if (forecastData) {
+				const weatherMain = forecastData.weather[0].main;
+
+				// Apply different background images based on weather conditions
+				let backgroundImage = "";
+
+				switch (weatherMain) {
+					case "Rain":
+						backgroundImage = "url('/rainning.png')";
+						break;
+					case "Clear":
+						backgroundImage = "url('/sunny.png')";
+						break;
+					case "Clouds":
+						backgroundImage = "url('/cloudy.png')";
+						break;
+					default:
+						backgroundImage = "url('/sunny.png')";
+				}
+
+				// Apply the background image to the cell
+				info.el.style.backgroundImage = backgroundImage;
+				info.el.style.backgroundSize = "contain"; // Ensure the image covers the cell
+				info.el.style.backgroundPosition = "center";
+				info.el.style.backgroundRepeat = "no-repeat";
+			}
+		} else {
+			console.log("No forecast yet. Enter City Name.");
+		}
 	};
+
+	if (loading) {
+		return <div>Loading weather data...</div>;
+	}
 
 	return (
 		<div className="flex flex-col w-[1350px]  h-screen">
 			<Navbar />
-			{JSON.stringify(userData.events)}
+			{/* {JSON.stringify(userData.city)} */}
 			{/* {JSON.stringify(newEvent.start)} */}
-			<span>
+			{/* <span>
+				--------------------------------------------------------------------------------------------
+			</span> */}
+			{/* NewEvent: {JSON.stringify(newEvent)} */}
+			{/* <span>
 				--------------------------------------------------------------------------------------------
 			</span>
-			{JSON.stringify(newEvent)}
+			Tags Hidden: {JSON.stringify(tagsHidden)}
 			<span>
 				--------------------------------------------------------------------------------------------
-			</span>
-			{JSON.stringify(tagsHidden)}
-			<span>
-				--------------------------------------------------------------------------------------------
-			</span>
-			{JSON.stringify(forecast)}
+			</span> */}
+			{/* Forecast: {JSON.stringify(forecast)} */}
 			<div className="h-full pt-5 px-2">
 				<FullCalendar
 					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
@@ -161,10 +223,10 @@ const CalendarPage = () => {
 					eventClick={handleEventClick}
 					dayMaxEventRows={4}
 					eventBorderColor="#555555"
+					// dayCellDidMount={handleDayCellDidMount}
 					dayCellDidMount={handleDayCellDidMount}
 				/>
 			</div>
-
 			{selectedEvent && (
 				<Drawer
 					open={isDrawerOpen}

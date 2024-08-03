@@ -149,6 +149,8 @@ export async function addEventToDB(newEventData: any) {
 }
 
 export async function updateCity(newCity : string) {
+    console.log("INSIDE UPDATECITY SERVER ACTIONS")
+    console.log(`New City: ${newCity}`)
     const { userId } = auth();
 
     if (!userId){
@@ -168,7 +170,7 @@ export async function updateCity(newCity : string) {
 
         // Save the updated user
         await user.save();
-
+        console.log(`UPDATED USER AFTER UPDATECITY: ${JSON.stringify(user)}`)
         return JSON.parse(JSON.stringify(user));
     } catch (error) {
         console.error(error)
