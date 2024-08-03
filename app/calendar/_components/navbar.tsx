@@ -5,19 +5,38 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Logo from "../app/(landing)/_components/logo";
 import { useScrollTop } from "@/hooks/use-scroll-top";
 import { Spinner } from "@/components/spinner";
 import { usePathname } from "next/navigation";
+import { MapPin } from "lucide-react";
+import { useUserContext } from "@/hooks/UserContext";
+import { updateCity } from "@/lib/actions/user.action";
+import Logo from "@/app/(landing)/_components/logo";
+import { Input } from "@/components/ui/input";
 
 export const Navbar = () => {
 	// const { isAuthenticated, isLoading } = useConvexAuth();
 	const { isSignedIn, isLoaded } = useUser();
 	const scrolled = useScrollTop();
 	const pathname = usePathname();
+	const { setUserData, city, setCity } = useUserContext();
+
+	const debounce = (func: (...args: any[]) => void, wait: number) => {
+		let timeout: NodeJS.Timeout;
+		return (...args: any[]) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => func(...args), wait);
+		};
+	};
+
+	const handleCityChange = debounce(async (event: any) => {
+		console.log(event.target.value);
+		setCity(event.target.value);
+		const updatedUser = await updateCity(city);
+		setUserData(updatedUser);
+	}, 1000);
 
 	return (
-
 		<div>
 			{pathname === "/" && (
 				<div className="w-full flex justify-between items-center p-6">
@@ -57,7 +76,17 @@ export const Navbar = () => {
 				</div>
 			)}
 			{pathname === "/calendar" && (
-				<div className="flex justify-end p-3">
+				<div className="flex justify-end p-3 gap-x-5 items-center">
+					<div className="flex items-center border rounded-md group pl-2">
+						<MapPin />
+						<Input
+							type="text"
+							placeholder={city ? city : "Enter US City Name"}
+							className="border-0"
+							// value={city}
+							onChange={handleCityChange}
+						/>
+					</div>
 					<UserButton afterSignOutUrl="/" />
 				</div>
 			)}

@@ -6,7 +6,6 @@ import interactionPlugin, {
 	DropArg,
 } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { Navbar } from "@/components/navbar";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { useUserContext } from "@/hooks/UserContext";
@@ -27,6 +26,7 @@ import {
 	DrawerTrigger,
 } from "@/components/ui/drawer";
 import { DayCellContentArg, EventClickArg } from "@fullcalendar/core/index.js";
+import { Navbar } from "./_components/navbar";
 
 const CalendarPage = () => {
 	const { user } = useUser();
@@ -143,8 +143,8 @@ const CalendarPage = () => {
 					height="auto"
 					handleWindowResize={true}
 					expandRows={false}
-					events={userData?.events.filter((event: any) =>
-						!tagsHidden.includes(event.tag_id)
+					events={userData?.events.filter(
+						(event: any) => !tagsHidden.includes(event.tag_id)
 					)}
 					nowIndicator={true}
 					editable={true}

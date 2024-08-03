@@ -40,6 +40,8 @@ interface UserContextType {
 	setTagsHidden: any;
 	forecast: any;
 	setForecast: any;
+	city: any;
+	setCity: any;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -60,6 +62,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 	const [tagsHidden, setTagsHidden] = useState([]);
 	const OpenweatherAPIKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 	const [forecast, setForecast] = useState([]);
+	const [city, setCity] = useState("");
 
 	useEffect(() => {
 		if (!isLoaded) return;
@@ -90,15 +93,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 		const fetchWeatherFromApi = async () => {
 			const response = await fetch(
-				`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${city},${"US"}&appid=${OpenweatherAPIKey}`
+				`https://pro.openweathermap.org/data/2.5/forecast/climate?q=${city},${"US"}&units=imperial&appid=${OpenweatherAPIKey}`
 			);
 			const data = await response.json();
 			setForecast(data.list); // `list` contains daily forecast data
 		};
 
 		fetchUserFromApi();
-		fetchWeatherFromApi();
-	}, [isLoaded, isSignedIn]);
+		if (city) {
+			fetchWeatherFromApi();
+		}
+	}, [isLoaded, isSignedIn, city]);
 
 	if (loading) {
 		return (
@@ -128,6 +133,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 				setForecast,
 				tagsHidden,
 				setTagsHidden,
+				city,
+				setCity,
 			}}
 		>
 			{children}

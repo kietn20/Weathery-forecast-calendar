@@ -16,6 +16,7 @@ interface IUser extends Document {
     email: string;
     firstName?: string;
     lastName?: string;
+    city?: string;
     events: any[];
     tags: ITag[];
   }
@@ -38,6 +39,9 @@ const UserSchema = new Schema({
         type: String
     },
     lastName: {
+        type: String
+    },
+    city: {
         type: String
     },
     events: {

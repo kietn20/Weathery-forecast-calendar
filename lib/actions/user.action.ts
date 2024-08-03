@@ -147,3 +147,31 @@ export async function addEventToDB(newEventData: any) {
         return NextResponse.json({ message: "Error adding event", error }, { status: 500 })
     }
 }
+
+export async function updateCity(newCity : string) {
+    const { userId } = auth();
+
+    if (!userId){
+        return NextResponse.json({ message : "Not Authenticated"}, { status: 401});
+    }
+
+    try {
+        await connect();
+
+        const user = await User.findOne({ clerkId: userId })
+
+        if (!user){
+            return NextResponse.json({ message : "User not found"}, { status: 404});
+        }
+
+        if (newCity) user.city = newCity;
+
+        // Save the updated user
+        await user.save();
+
+        return JSON.parse(JSON.stringify(user));
+    } catch (error) {
+        console.error(error)
+        return NextResponse.json({ message: "Error adding tag", error }, { status: 500 })
+    }
+}
