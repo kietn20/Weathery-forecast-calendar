@@ -148,6 +148,38 @@ export async function addEventToDB(newEventData: any) {
     }
 }
 
+export async function deleteEventFromDB(eventObjectIdToDelete: any) {
+    console.log("Inside DeleteEvenT From Server ACtions")
+    console.log(`eventObjectIdToDelete: ${eventObjectIdToDelete}`)
+    const { userId } = auth();
+
+    if (!userId){
+        return NextResponse.json({ message : "Not Authenticated"}, { status: 401});
+    }
+
+    try {
+        await connect();
+
+        const user = await User.findOne({ clerkId: userId })
+
+        if (!user){
+            return NextResponse.json({ message : "User not found"}, { status: 404});
+        }
+
+        // Use $push to add new tag into tags array
+        const updatedUser = await User.findOneAndUpdate(
+            { clerkId: userId },
+            { $pull: { events: {_id: eventObjectIdToDelete} }},
+            { new: true, runValidators: false }
+        );
+        console.log(updatedUser)
+        return JSON.parse(JSON.stringify(updatedUser));
+    } catch (error) {
+        console.error(error)
+        return NextResponse.json({ message: "Error adding event", error }, { status: 500 })
+    }
+}
+
 export async function updateCity(newCity : string) {
     console.log("INSIDE UPDATECITY SERVER ACTIONS")
     console.log(`New City: ${newCity}`)

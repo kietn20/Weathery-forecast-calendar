@@ -11,9 +11,20 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "@/hooks/UserContext";
 import LeftNavigation from "./_components/left-navigation";
 import RightNavigation from "./_components/right-navigation";
-import { addEventToDB } from "@/lib/actions/user.action";
+import { addEventToDB, deleteEventFromDB } from "@/lib/actions/user.action";
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
-
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
 	Drawer,
@@ -27,6 +38,7 @@ import {
 } from "@/components/ui/drawer";
 import { DayCellContentArg, EventClickArg } from "@fullcalendar/core/index.js";
 import { Navbar } from "./_components/navbar";
+import { Copy } from "lucide-react";
 
 const CalendarPage = () => {
 	const OpenweatherAPIKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
@@ -44,47 +56,7 @@ const CalendarPage = () => {
 	} = useUserContext();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [selectedEvent, setSetselectedEvent] = useState<any>(null);
-	const data = [
-		{
-			goal: 400,
-		},
-		{
-			goal: 300,
-		},
-		{
-			goal: 200,
-		},
-		{
-			goal: 300,
-		},
-		{
-			goal: 200,
-		},
-		{
-			goal: 278,
-		},
-		{
-			goal: 189,
-		},
-		{
-			goal: 239,
-		},
-		{
-			goal: 300,
-		},
-		{
-			goal: 200,
-		},
-		{
-			goal: 278,
-		},
-		{
-			goal: 189,
-		},
-		{
-			goal: 349,
-		},
-	];
+
 	// useEffect(() => {
 	// 	console.log(user);
 	// 	console.log(user?.publicMetadata.userId)
@@ -146,6 +118,7 @@ const CalendarPage = () => {
 				const weatherMain = forecastData.weather[0].main;
 
 				// Apply different background images based on weather conditions
+				let weatheryImage = "";
 				let backgroundImage = "";
 
 				switch (weatherMain) {
@@ -162,16 +135,20 @@ const CalendarPage = () => {
 					// 	backgroundImage = "url('/sunny.png')";
 
 					case "Rain":
-						backgroundImage = "/rainning.png";
+						weatheryImage = "/rainning.png";
+						backgroundImage = "url('/rainningbg.png')";
 						break;
 					case "Clear":
-						backgroundImage = "/sunny.png";
+						weatheryImage = "/sunny.png";
+						backgroundImage = "url('/sunnybg.png')";
 						break;
 					case "Clouds":
-						backgroundImage = "/cloudy.png";
+						weatheryImage = "/cloudy.png";
+						backgroundImage = "url('/cloudybg.png')";
 						break;
 					default:
-						backgroundImage = "/sunny.png";
+						weatheryImage = "/sunny.png";
+						backgroundImage = "url('/sunnybg.png')";
 				}
 
 				info.el.style.position = "relative";
@@ -190,7 +167,7 @@ const CalendarPage = () => {
 				// weatherMainElement.textContent = weatherMain;
 				// weatherMainElement.style.fontWeight = "bold";
 				const weatherMainElement = document.createElement("img");
-				weatherMainElement.src = backgroundImage;
+				weatherMainElement.src = weatheryImage;
 				weatherMainElement.style.width = "28px";
 				weatherMainElement.style.height = "28px";
 
@@ -214,8 +191,8 @@ const CalendarPage = () => {
 
 				// Apply the background image to the cell
 				// info.el.style.backgroundImage = backgroundImage;
-				// info.el.style.backgroundSize = "contain"; // Ensure the image covers the cell
-				// info.el.style.backgroundPosition = "center";
+				// info.el.style.backgroundSize = "60%"; // Ensure the image covers the cell
+				// info.el.style.backgroundPosition = "bottom";
 				// info.el.style.backgroundRepeat = "no-repeat";
 			}
 		} else {
@@ -227,9 +204,18 @@ const CalendarPage = () => {
 		return <div>Loading weather data...</div>;
 	}
 
+	const handleDeleteEvent = async (eventIdToDelete: any) => {
+		console.log(`Deleting event: ${eventIdToDelete}`);
+		const updatedUser = await deleteEventFromDB(eventIdToDelete);
+		setUserData(updatedUser);
+		setIsDrawerOpen(false);
+		setSetselectedEvent(null);
+	};
+
 	return (
 		<div className="flex flex-col w-[1350px]  h-screen">
 			<Navbar />
+			{/* {JSON.stringify(selectedEvent)} */}
 			{/* {JSON.stringify(userData.city)} */}
 			{/* {JSON.stringify(newEvent.start)} */}
 			{/* <span>
@@ -286,56 +272,119 @@ const CalendarPage = () => {
 				)}
 			</div>
 			{selectedEvent && (
-				<Drawer
-					open={isDrawerOpen}
-					onClose={() => setIsDrawerOpen(false)}
-				>
-					<DrawerContent>
-						<div className="mx-auto w-full max-w-sm">
-							<DrawerHeader>
-								{JSON.stringify(selectedEvent)}
-								<DrawerTitle>{selectedEvent.title}</DrawerTitle>
-								<DrawerDescription>
-									{selectedEvent.description
-										? selectedEvent.description
-										: "No Description"}
-								</DrawerDescription>
-							</DrawerHeader>
-							<div className="p-4 pb-0">
-								<div className="mt-3 h-[120px]">
-									<ResponsiveContainer
-										width="100%"
-										height="100%"
-									>
-										<BarChart data={data}>
-											<Bar
-												dataKey="goal"
-												style={
-													{
-														fill: "hsl(var(--foreground))",
-														opacity: 0.9,
-													} as React.CSSProperties
-												}
-											/>
-										</BarChart>
-									</ResponsiveContainer>
-								</div>
+				// <Drawer
+				// 	open={isDrawerOpen}
+				// 	onClose={() => setIsDrawerOpen(false)}
+				// >
+				// 	<DrawerContent>
+				// 		<div className="mx-auto w-full max-w-sm">
+				// 			<DrawerHeader>
+				// 				{JSON.stringify(selectedEvent)}
+				// 				<DrawerTitle>{selectedEvent.title}</DrawerTitle>
+				// 				<DrawerDescription>
+				// 					{selectedEvent.description
+				// 						? selectedEvent.description
+				// 						: "No Description"}
+				// 				</DrawerDescription>
+				// 			</DrawerHeader>
+				// 			<div className="p-4 pb-0">
+				// 				<div className="mt-3 h-[120px]">
+				// 					<ResponsiveContainer
+				// 						width="100%"
+				// 						height="100%"
+				// 					>
+				// 						<BarChart data={data}>
+				// 							<Bar
+				// 								dataKey="goal"
+				// 								style={
+				// 									{
+				// 										fill: "hsl(var(--foreground))",
+				// 										opacity: 0.9,
+				// 									} as React.CSSProperties
+				// 								}
+				// 							/>
+				// 						</BarChart>
+				// 					</ResponsiveContainer>
+				// 				</div>
+				// 			</div>
+				// 			<DrawerFooter>
+				// 				<Button>Submit</Button>
+				// 				<DrawerClose
+				// 					asChild
+				// 					onClick={() => {
+				// 						setIsDrawerOpen(false);
+				// 						setSetselectedEvent(null);
+				// 					}}
+				// 				>
+				// 					<Button variant="outline">Close</Button>
+				// 				</DrawerClose>
+				// 			</DrawerFooter>
+				// 		</div>
+				// 	</DrawerContent>
+				// </Drawer>
+				<Dialog open={isDrawerOpen}>
+					<DialogContent className="sm:max-w-md">
+						<DialogHeader>
+							<DialogTitle>
+								{selectedEvent.title} (
+								{selectedEvent.start.toLocaleDateString(
+									"en-US",
+									{
+										weekday: "short", // Day name (e.g., Monday)
+										month: "short", // Abbreviated month (e.g., Jan)
+										day: "numeric", // Day number (e.g., 1)
+									}
+								)}{" "}
+								{selectedEvent.end
+									? `- ${selectedEvent.end.toLocaleDateString(
+											"en-US",
+											{
+												weekday: "short", // Day name (e.g., Monday)
+												month: "short", // Abbreviated month (e.g., Jan)
+												day: "numeric", // Day number (e.g., 1)
+											}
+									  )}`
+									: ""}
+								)
+							</DialogTitle>
+							<DialogDescription>
+								{selectedEvent.description
+									? selectedEvent.description
+									: "No Description"}
+							</DialogDescription>
+						</DialogHeader>
+						{/* <div className="flex items-center space-x-2">
+							<div className="grid flex-1 gap-2">
+								<label htmlFor="link" className="sr-only">
+									Link
+								</label>
 							</div>
-							<DrawerFooter>
-								<Button>Submit</Button>
-								<DrawerClose
-									asChild
-									onClick={() => {
-										setIsDrawerOpen(false);
-										setSetselectedEvent(null);
-									}}
-								>
-									<Button variant="outline">Close</Button>
-								</DrawerClose>
-							</DrawerFooter>
-						</div>
-					</DrawerContent>
-				</Drawer>
+						</div> */}
+						<DialogFooter className="sm:justify-start">
+							<Button
+								type="button"
+								variant="destructive"
+								onClick={() =>
+									handleDeleteEvent(
+										selectedEvent.extendedProps._id
+									)
+								}
+							>
+								Delete Event
+							</Button>
+							<DialogClose
+								asChild
+								onClick={() => {
+									setIsDrawerOpen(false);
+								}}
+							>
+								<Button type="button" variant="secondary">
+									Close
+								</Button>
+							</DialogClose>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
 			)}
 		</div>
 	);

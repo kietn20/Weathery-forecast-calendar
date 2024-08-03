@@ -31,6 +31,8 @@ const RightNavigation = () => {
 	const [draggableEventCount, setDraggableEventCount] = useState(
 		userData.events.filter((event: any) => event.start == null).length
 	);
+	const [currentEvent, setCurrentEvent] = useState<any>(null);
+	const [upcomingEvent, setUpcomingEvent] = useState<any>(null);
 
 	useEffect(() => {
 		let draggableEl = document.getElementById("draggable-el");
@@ -47,6 +49,27 @@ const RightNavigation = () => {
 		}
 	}, []);
 
+	useEffect(() => {
+		const now = new Date();
+
+		// Get the current and upcoming events
+		setCurrentEvent(
+			userData.events.find((event: any) => {
+				const startTime = new Date(event.start);
+				const endTime = new Date(startTime);
+				endTime.setMinutes(endTime.getMinutes() + 60); // assuming events are 1 hour long
+				return startTime <= now && now <= endTime;
+			})
+		);
+
+		setUpcomingEvent(
+			userData.events.find((event: any) => {
+				const startTime = new Date(event.start);
+				return startTime > now;
+			})
+		);
+	}, []);
+
 	return (
 		<div className="h-screen w-[300px] bg-[#F9F9F9] flex flex-col justify-between items-center p-3">
 			<div className="flex flex-col items-center">
@@ -58,7 +81,9 @@ const RightNavigation = () => {
 								Current Task
 							</span>
 							<span className="font-light text-sm">
-								Work on Project
+								{currentEvent
+									? currentEvent.title
+									: "No Current Task"}
 							</span>
 						</div>
 					</div>
@@ -71,7 +96,9 @@ const RightNavigation = () => {
 								Upcoming Task
 							</span>
 							<span className="font-light text-sm">
-								Evening Run
+								{upcomingEvent
+									? upcomingEvent.title
+									: "No Upcoming Task"}
 							</span>
 						</div>
 					</div>
