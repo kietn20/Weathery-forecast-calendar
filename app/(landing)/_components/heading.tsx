@@ -48,18 +48,6 @@ export default function Heading() {
 						</Button>
 					</>
 				)}
-				{isLoaded && (
-					<div>
-						<Button
-							size="lg"
-							className="w-52 h-16 rounded-3xl bg-[#DFEFBD] text-base font-bold hover:bg-lime-300 transition ease-in-out duration-300"
-							variant="secondary"
-						>
-							{/* <Link href="/demo">Try Demo</Link> */}
-							Try Demo
-						</Button>
-					</div>
-				)}
 			</div>
 			<br />
 			<div className="flex ml-16">
