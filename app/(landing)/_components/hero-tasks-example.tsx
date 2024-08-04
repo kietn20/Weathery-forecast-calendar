@@ -13,42 +13,42 @@ const HeroTaskExample = () => {
 					</div>
 					<div className="absolute top-0 left-[164px]">Monday</div>
 					<div className="absolute w-[38px] top-0 left-[269px]">
-						1977
+						75°F
 					</div>
 				</div>
 				<div className="absolute w-[313px] h-8 top-[101px] left-[25px]">
 					<div className="absolute top-0 left-0">Pick Up Clothes</div>
 					<div className="absolute top-0 left-[164px]">Tuesday</div>
 					<div className="absolute w-[38px] top-0 left-[269px]">
-						1986
+						85°F
 					</div>
 				</div>
 				<div className="absolute w-[313px] h-8 top-[134px] left-[25px]">
 					<div className="absolute top-0 left-0">Turn In Project</div>
 					<div className="absolute top-0 left-[164px]">Wednesday</div>
 					<div className="absolute w-[38px] top-0 left-[269px]">
-						1973
+						69°F
 					</div>
 				</div>
 				<div className="absolute w-[313px] h-8 top-[167px] left-[25px]">
 					<div className="absolute top-0 left-0">Joe’s Birthday</div>
 					<div className="absolute top-0 left-[164px]">Thursday</div>
 					<div className="absolute w-[38px] top-0 left-[269px]">
-						1942
+						72°F
 					</div>
 				</div>
 				<div className="absolute w-[313px] h-8 top-[200px] left-[25px]">
 					<div className="absolute top-0 left-0">Movie Date</div>
 					<div className="absolute top-0 left-[164px]">Friday</div>
 					<div className="absolute w-[38px] top-0 left-[269px]">
-						1960
+						99°F
 					</div>
 				</div>
 				<div className="absolute w-[313px] h-8 top-[233px] left-[25px]">
 					<div className="absolute top-0 left-0">Laundry</div>
 					<div className="absolute top-0 left-[164px]">Sunday</div>
 					<div className="absolute w-[38px] top-0 left-[269px]">
-						1972
+						89°F
 					</div>
 				</div>
 				<img
