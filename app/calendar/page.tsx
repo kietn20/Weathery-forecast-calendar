@@ -91,19 +91,20 @@ const CalendarPage = () => {
 					},${"US"}&units=imperial&appid=${OpenweatherAPIKey}`
 				);
 				const data = await response.json();
+				console.log(data);
 				setForecast(data.list); // `list` contains daily forecast data
 				setLoading(false);
 			} catch (error) {
 				setLoading(false);
 			}
 		};
-		if (userData.city) {
-			fetchWeatherFromApi();
-		}
+		// if (userData.city) {
+		fetchWeatherFromApi();
+		// }
 	}, [userData.city]);
 
 	const handleDayCellDidMount = (info: any) => {
-		if (forecast.length > 0) {
+		if (forecast) {
 			// Get the date of the current cell
 			const cellDate = info.date;
 
@@ -122,18 +123,6 @@ const CalendarPage = () => {
 				let backgroundImage = "";
 
 				switch (weatherMain) {
-					// case "Rain":
-					// 	backgroundImage = "url('/rainning.png')";
-					// 	break;
-					// case "Clear":
-					// 	backgroundImage = "url('/sunny.png')";
-					// 	break;
-					// case "Clouds":
-					// 	backgroundImage = "url('/cloudy.png')";
-					// 	break;
-					// default:
-					// 	backgroundImage = "url('/sunny.png')";
-
 					case "Rain":
 						weatheryImage = "/rainning.png";
 						backgroundImage = "url('/rainningbg.png')";
@@ -163,9 +152,7 @@ const CalendarPage = () => {
 				dayInfoContainer.style.position = "absolute";
 				dayInfoContainer.style.top = "5px";
 				dayInfoContainer.style.left = "5px";
-				// const weatherMainElement = document.createElement("div");
-				// weatherMainElement.textContent = weatherMain;
-				// weatherMainElement.style.fontWeight = "bold";
+
 				const weatherMainElement = document.createElement("img");
 				weatherMainElement.src = weatheryImage;
 				weatherMainElement.style.width = "28px";
@@ -188,12 +175,6 @@ const CalendarPage = () => {
 					tempDayElement
 				);
 				info.el.prepend(dayInfoContainer);
-
-				// Apply the background image to the cell
-				// info.el.style.backgroundImage = backgroundImage;
-				// info.el.style.backgroundSize = "60%"; // Ensure the image covers the cell
-				// info.el.style.backgroundPosition = "bottom";
-				// info.el.style.backgroundRepeat = "no-repeat";
 			}
 		} else {
 			console.log("No forecast yet. Enter City Name.");
@@ -201,7 +182,41 @@ const CalendarPage = () => {
 	};
 
 	if (loading) {
-		return <div>Loading weather data...</div>;
+		return (
+			<div className="pt-20 ">
+				<FullCalendar
+					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+					headerToolbar={{
+						left: "title",
+						center: "",
+						right: "dayGridMonth,timeGridWeek,prev,next,today",
+					}}
+					height="auto"
+					handleWindowResize={true}
+					expandRows={false}
+					events={userData?.events.filter(
+						(event: any) => !tagsHidden.includes(event.tag_id)
+					)}
+					nowIndicator={true}
+					editable={true}
+					droppable={true}
+					selectable={true}
+					selectMirror={true}
+					dateClick={(selectedDate) => {
+						setNewEvent({
+							...newEvent,
+							start: selectedDate.date,
+						});
+					}}
+					drop={(data) => addEvent(data)}
+					eventClick={handleEventClick}
+					dayMaxEventRows={4}
+					eventBorderColor="#555555"
+					// dayCellDidMount={handleDayCellDidMount}
+					// dayCellDidMount={handleDayCellDidMount}
+				/>
+			</div>
+		);
 	}
 
 	const handleDeleteEvent = async (eventIdToDelete: any) => {
@@ -231,45 +246,37 @@ const CalendarPage = () => {
 			</span> */}
 			{/* Forecast: {JSON.stringify(forecast)} */}
 			<div className="h-full pt-5 px-2">
-				{loading == false ? (
-					<FullCalendar
-						plugins={[
-							dayGridPlugin,
-							interactionPlugin,
-							timeGridPlugin,
-						]}
-						headerToolbar={{
-							left: "title",
-							center: "",
-							right: "dayGridMonth,timeGridWeek,prev,next,today",
-						}}
-						height="auto"
-						handleWindowResize={true}
-						expandRows={false}
-						events={userData?.events.filter(
-							(event: any) => !tagsHidden.includes(event.tag_id)
-						)}
-						nowIndicator={true}
-						editable={true}
-						droppable={true}
-						selectable={true}
-						selectMirror={true}
-						dateClick={(selectedDate) => {
-							setNewEvent({
-								...newEvent,
-								start: selectedDate.date,
-							});
-						}}
-						drop={(data) => addEvent(data)}
-						eventClick={handleEventClick}
-						dayMaxEventRows={4}
-						eventBorderColor="#555555"
-						// dayCellDidMount={handleDayCellDidMount}
-						dayCellDidMount={handleDayCellDidMount}
-					/>
-				) : (
-					""
-				)}
+				<FullCalendar
+					plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+					headerToolbar={{
+						left: "title",
+						center: "",
+						right: "dayGridMonth,timeGridWeek,prev,next,today",
+					}}
+					height="auto"
+					handleWindowResize={true}
+					expandRows={false}
+					events={userData?.events.filter(
+						(event: any) => !tagsHidden.includes(event.tag_id)
+					)}
+					nowIndicator={true}
+					editable={true}
+					droppable={true}
+					selectable={true}
+					selectMirror={true}
+					dateClick={(selectedDate) => {
+						setNewEvent({
+							...newEvent,
+							start: selectedDate.date,
+						});
+					}}
+					drop={(data) => addEvent(data)}
+					eventClick={handleEventClick}
+					dayMaxEventRows={4}
+					eventBorderColor="#555555"
+					// dayCellDidMount={handleDayCellDidMount}
+					dayCellDidMount={handleDayCellDidMount}
+				/>
 			</div>
 			{selectedEvent && (
 				// <Drawer
@@ -326,6 +333,7 @@ const CalendarPage = () => {
 					<DialogContent className="sm:max-w-md">
 						<DialogHeader>
 							<DialogTitle>
+								{/* {JSON.stringify(selectedEvent)} */}
 								{selectedEvent.title} (
 								{selectedEvent.start.toLocaleDateString(
 									"en-US",
@@ -348,8 +356,8 @@ const CalendarPage = () => {
 								)
 							</DialogTitle>
 							<DialogDescription>
-								{selectedEvent.description
-									? selectedEvent.description
+								{selectedEvent.extendedProps.description
+									? selectedEvent.extendedProps.description
 									: "No Description"}
 							</DialogDescription>
 						</DialogHeader>
