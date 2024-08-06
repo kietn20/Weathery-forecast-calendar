@@ -68,7 +68,6 @@ export async function POST(req: Request) {
         tags: [{title: (username == null) ? first_name : username, color: '#4a90e2'}]        
     }
 
-    console.log(`Adding new User: ${user}`)
     const newUser = await createUser(user);
 
     if (newUser) {

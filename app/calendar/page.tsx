@@ -26,19 +26,9 @@ import {
 import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger,
-} from "@/components/ui/drawer";
-import { DayCellContentArg, EventClickArg } from "@fullcalendar/core/index.js";
+
+import { EventClickArg } from "@fullcalendar/core/index.js";
 import { Navbar } from "./_components/navbar";
-import { Copy } from "lucide-react";
 
 const CalendarPage = () => {
 	const OpenweatherAPIKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
@@ -91,7 +81,7 @@ const CalendarPage = () => {
 					},${"US"}&units=imperial&appid=${OpenweatherAPIKey}`
 				);
 				const data = await response.json();
-				console.log(data);
+				// console.log(data);
 				setForecast(data.list); // `list` contains daily forecast data
 				setLoading(false);
 			} catch (error) {
@@ -220,7 +210,7 @@ const CalendarPage = () => {
 	}
 
 	const handleDeleteEvent = async (eventIdToDelete: any) => {
-		console.log(`Deleting event: ${eventIdToDelete}`);
+		// console.log(`Deleting event: ${eventIdToDelete}`);
 		const updatedUser = await deleteEventFromDB(eventIdToDelete);
 		setUserData(updatedUser);
 		setIsDrawerOpen(false);

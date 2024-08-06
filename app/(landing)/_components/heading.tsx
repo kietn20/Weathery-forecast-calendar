@@ -49,8 +49,7 @@ export default function Heading() {
 					</>
 				)}
 			</div>
-			<br />
-			<div className="flex ml-16">
+			<div className="flex ml-16 pt-12 select-none">
 				<Image
 					src="/hero-teamwork.png"
 					alt="hero"
@@ -63,14 +62,14 @@ export default function Heading() {
 				width={220}
 				height={220}
 				alt="hero-drawing"
-				className="absolute -top-[200px] left-[340px]"
+				className="absolute -top-[200px] left-[340px] select-none"
 			/>
 			<Image
 				src="/walking.png"
 				width={100}
 				height={300}
 				alt="girl-walking"
-				className="absolute top-[75px] -left-[200px]"
+				className="absolute top-[75px] -left-[200px] select-none"
 			/>
 		</div>
 	);

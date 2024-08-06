@@ -5,7 +5,7 @@ import HeroTaskExample from "./hero-tasks-example";
 
 export const Hero = () => {
 	return (
-		<div className="relative w-[500px] ">
+		<div className="relative w-[500px] select-none">
 			<Calendar
 				mode="single"
 				className="rounded-lg border scale-150 absolute left-32"
