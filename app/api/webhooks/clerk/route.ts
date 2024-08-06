@@ -59,7 +59,7 @@ export async function POST(req: Request) {
 
     const user = {
         clerkId: id, 
-        username: username,
+        username: username || first_name,
         email: email_addresses[0].email_address,
         firstName: first_name,
         lastName: last_name,
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
         tags: [{title: (username == null) ? first_name : username, color: '#4a90e2'}]        
     }
 
-    console.log(user)
+    console.log(`Adding new User: ${user}`)
     const newUser = await createUser(user);
 
     if (newUser) {
