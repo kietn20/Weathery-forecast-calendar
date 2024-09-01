@@ -7,7 +7,7 @@ Home Page
 ![homepage](https://github.com/kietn20/weathery/blob/main/public/WeatheryHomePage.png)
 
 Calendar Page
-![calendarpage]([https://github.com/kietn20/knotes-nextjs-notes-app/blob/main/public/KeyNotesNotePage.png](https://github.com/kietn20/weathery/blob/main/public/WeatheryCalendarPage.png))
+![calendarpage](https://github.com/kietn20/weathery/blob/main/public/WeatheryCalendarPage.png)
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
