@@ -4,11 +4,10 @@
 A calendar scheduling application that embrace the changing elements of nature to allow you to fully plans your days around the weather. It fetches weather forecasts and display accurate readings along with your daily tasks.
 
 Home Page
-![homepage](https://github.com/kietn20/knotes-nextjs-notes-app/blob/main/public/KeyNotesHomePage.png)
+![homepage](https://github.com/kietn20/weathery/blob/main/public/WeatheryHomePage.png)
 
-Note Page
-![notepage1](https://github.com/kietn20/knotes-nextjs-notes-app/blob/main/public/KeyNotesNotePage.png)
-![notepage2](https://github.com/kietn20/knotes-nextjs-notes-app/blob/main/public/KeyNotesNotePage2.png)
+Calendar Page
+![calendarpage]([https://github.com/kietn20/knotes-nextjs-notes-app/blob/main/public/KeyNotesNotePage.png](https://github.com/kietn20/weathery/blob/main/public/WeatheryCalendarPage.png))
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
